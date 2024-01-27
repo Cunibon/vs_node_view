@@ -1,0 +1,265 @@
+import 'package:flutter/material.dart';
+import 'package:vs_node_view/vs_node_view.dart';
+
+void main() async {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData(
+        scaffoldBackgroundColor: const Color.fromARGB(255, 46, 46, 46),
+      ),
+      home: const Scaffold(body: VSNodeExample()),
+    );
+  }
+}
+
+class VSNodeExample extends StatefulWidget {
+  const VSNodeExample({super.key});
+
+  @override
+  State<VSNodeExample> createState() => _VSNodeExampleState();
+}
+
+class _VSNodeExampleState extends State<VSNodeExample> {
+  Iterable<String>? results;
+
+  late VSNodeDataProvider nodeDataProvider;
+
+  @override
+  void initState() {
+    super.initState();
+
+    final nodeBuilders = [
+      VSSubgroup(
+        name: "Numbers",
+        subgroup: [
+          (Offset offset, VSOutputData? ref) => VSNodeData(
+                type: "Parse int",
+                widgetOffset: offset,
+                inputData: [
+                  VSStringInputData(
+                    name: "Input",
+                    initialConnection: ref,
+                  )
+                ],
+                outputData: [
+                  VSIntOutputData(
+                    name: "Output",
+                    outputFunction: (data) => int.parse(data["Input"]),
+                  ),
+                ],
+              ),
+          (Offset offset, VSOutputData? ref) => VSNodeData(
+                type: "Sum",
+                widgetOffset: offset,
+                inputData: [
+                  VSNumInputData(
+                    name: "Input 1",
+                    initialConnection: ref,
+                  ),
+                  VSNumInputData(
+                    name: "Input 2",
+                    initialConnection: ref,
+                  )
+                ],
+                outputData: [
+                  VSNumOutputData(
+                    name: "output",
+                    outputFunction: (data) {
+                      return (data["Input 1"] ?? 0) + (data["Input 2"] ?? 0);
+                    },
+                  ),
+                ],
+              ),
+        ],
+      ),
+      VSSubgroup(
+        name: "Logik",
+        subgroup: [
+          (Offset offset, VSOutputData? ref) => VSNodeData(
+                type: "Bigger then",
+                widgetOffset: offset,
+                inputData: [
+                  VSNumInputData(
+                    name: "First",
+                    initialConnection: ref,
+                  ),
+                  VSNumInputData(
+                    name: "Second",
+                    initialConnection: ref,
+                  ),
+                ],
+                outputData: [
+                  VSBoolOutputData(
+                    name: "Output",
+                    outputFunction: (data) => data["First"] > data["Second"],
+                  ),
+                ],
+              ),
+          (Offset offset, VSOutputData? ref) => VSNodeData(
+                type: "If",
+                widgetOffset: offset,
+                inputData: [
+                  VSBoolInputData(
+                    name: "Input",
+                    initialConnection: ref,
+                  ),
+                  VSDynamicInputData(
+                    name: "True",
+                    initialConnection: ref,
+                  ),
+                  VSDynamicInputData(
+                    name: "False",
+                    initialConnection: ref,
+                  ),
+                ],
+                outputData: [
+                  VSDynamicOutputData(
+                    name: "Output",
+                    outputFunction: (data) =>
+                        data["Input"] ? data["True"] : data["False"],
+                  ),
+                ],
+              ),
+        ],
+      ),
+      (Offset offset, VSOutputData? ref) {
+        final controller = TextEditingController();
+        final input = TextField(
+          controller: controller,
+          decoration: const InputDecoration(
+            isDense: true,
+            contentPadding: EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+          ),
+        );
+
+        return VSWidgetNode(
+          type: "Input",
+          widgetOffset: offset,
+          outputData: VSStringOutputData(
+            name: "Output",
+            outputFunction: (data) => controller.text,
+          ),
+          child: Expanded(child: input),
+          setValue: (value) => controller.text = value,
+          getValue: () => controller.text,
+        );
+      },
+      (Offset offset, VSOutputData? ref) => VSOutputNode(
+            type: "Output",
+            widgetOffset: offset,
+            ref: ref,
+          ),
+    ];
+
+    nodeDataProvider = VSNodeDataProvider(
+      nodeBuilders: nodeBuilders,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        InteractiveVSNodeView(
+          width: 5000,
+          height: 5000,
+          nodeDataProvider: nodeDataProvider,
+        ),
+        const Positioned(
+          bottom: 0,
+          right: 0,
+          child: Legend(),
+        ),
+        Positioned(
+          top: 0,
+          right: 0,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              ElevatedButton(
+                onPressed: () => setState(() {
+                  final entries =
+                      nodeDataProvider.nodeManger.getOutputNodes.map(
+                    (e) => e.evaluate(
+                      onError: (_, __) => Future.delayed(Duration.zero, () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            backgroundColor: Colors.deepOrange,
+                            content: Text('An error occured'),
+                          ),
+                        );
+                      }),
+                    ),
+                  );
+
+                  results = entries.map((e) => "${e.key}: ${e.value}");
+                }),
+                child: const Text("Evaluate"),
+              ),
+              if (results != null)
+                ...results!.map(
+                  (e) => Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(e),
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+Map<String, Color> inputTypes = {
+  "String": VSStringInputData(name: "legend").interfaceColor,
+  "Int": VSIntInputData(name: "legend").interfaceColor,
+  "Double": VSDoubleInputData(name: "legend").interfaceColor,
+  "Num": VSNumInputData(name: "legend").interfaceColor,
+  "Bool": VSBoolInputData(name: "legend").interfaceColor,
+  "Dynamic": VSDynamicInputData(name: "legend").interfaceColor,
+};
+
+class Legend extends StatelessWidget {
+  const Legend({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final List<Widget> widgets = [];
+
+    final entries = inputTypes.entries;
+
+    for (final entry in entries) {
+      widgets.add(
+        Row(
+          children: [
+            Text(entry.key),
+            Icon(
+              Icons.circle,
+              color: entry.value,
+            ),
+            if (entry != entries.last) const Divider(),
+          ],
+        ),
+      );
+    }
+
+    return Card(
+        child: Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: widgets,
+      ),
+    ));
+  }
+}
