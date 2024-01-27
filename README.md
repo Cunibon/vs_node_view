@@ -4,7 +4,7 @@ This package lets you define your own VSNodes and their interactions. These can 
 
 <p>
   <img src="https://firebon.de:8081/VSDemo/VSDemo.png"
-    alt="An example of a node tree created with the package" height="400"/>
+    alt="An example of a node tree created with the package"/>
 </p>
 
 ## Features
@@ -218,7 +218,6 @@ VSSubgroups Define a name and a new collection of nodes.
 
 ```dart
 final List<dynamic> nodeBuilders = [
-  textInputNode,
   VSSubgroup(
     name: "Number",
     subgroup: [
@@ -227,6 +226,14 @@ final List<dynamic> nodeBuilders = [
       sumNode,
     ],
   ),
+  VSSubgroup(
+    name: "Logik",
+    subgroup: [
+      biggerNode,
+      ifNode,
+    ],
+  ),
+  textInputNode,
   outputNode,
 ];
 ```
