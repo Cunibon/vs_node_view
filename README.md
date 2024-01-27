@@ -2,6 +2,8 @@ A Visual Scripting toolkit to create and use your own VS widgets.
 
 This package lets you define your own VSNodes and their interactions. These can be used by your users to create custom behaviours in your app.
 
+Check out the Demo: https://firebon.de:8081/VSDemo/
+
 <p>
   <img src="https://firebon.de:8081/VSDemo/VSDemo.png"
     alt="An example of a node tree created with the package"/>
