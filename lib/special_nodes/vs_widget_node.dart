@@ -14,12 +14,14 @@ class VSWidgetNode extends VSNodeData {
     required this.setValue,
     required this.getValue,
     required this.child,
+    String? title,
   }) : super(
           id: id,
           type: type,
           widgetOffset: widgetOffset,
           inputData: const [],
           outputData: [outputData],
+          title: title,
         );
 
   @override

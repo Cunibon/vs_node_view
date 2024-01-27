@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:vs_node_view/vs_node_view.dart';
-import 'package:vs_node_view/widgets/vs_node.dart';
 
 import 'helper/helper_functions.dart';
 import 'helper/test_data.dart';

@@ -22,7 +22,9 @@ class VSNodeData {
     required this.widgetOffset,
     required this.inputData,
     required this.outputData,
-  }) : _id = id ?? _getRandomString(10) {
+    String? title,
+  })  : _id = id ?? _getRandomString(10),
+        _title = title ?? "" {
     for (var value in inputData) {
       value.nodeData = this;
     }

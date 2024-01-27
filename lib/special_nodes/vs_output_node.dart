@@ -11,6 +11,7 @@ class VSOutputNode extends VSNodeData {
     required String type,
     required Offset widgetOffset,
     VSOutputData? ref,
+    String? title,
   }) : super(
           type: type,
           widgetOffset: widgetOffset,
@@ -21,6 +22,7 @@ class VSOutputNode extends VSNodeData {
             )
           ],
           outputData: const [],
+          title: title,
         );
 
   ///Evalutes the tree from this node and returns the result

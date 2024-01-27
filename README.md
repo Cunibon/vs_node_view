@@ -93,6 +93,8 @@ All nodes are defined with a function.
 The function will be called when creating new nodes or when deserializing them to make sure all classes are new instances.
 
 All nodes have a "type", there cannot be multiple nodes defined with the same type. 
+"type" will be used for deserialization and should not be changed if it already reached production, as deserialization will fail.
+"type" will be displayed to the user as a fallback if no title is given.
 Nodes have inputs, there cannot be multiple inputs with the same "name" defined in the same node. 
 Nodes have outputs, there cannot be multiple outputs with the same "name" defined in the same node. 
 The input data will be given to all outputs via a Map<String, dynamic>. The key is the name of the input and the value is what ever the input has received.
