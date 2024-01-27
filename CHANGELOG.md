@@ -1,3 +1,7 @@
+## 1.0.1
+
+* Added demo to README
+
 ## 1.0.0
 
 * First release of vs_node_view
