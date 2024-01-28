@@ -8,7 +8,7 @@ class VSSelectionArea extends StatefulWidget {
   ///
   ///Used inside [VSNodeView] to add a selction area to the node view
   ///
-  ///Hold "Ctrl" to select items or unselect seleted items
+  ///Hold "Alt" to select items or unselect seleted items
   const VSSelectionArea({
     required this.child,
     super.key,
@@ -49,9 +49,8 @@ class _VSSelectionAreaState extends State<VSSelectionArea> {
   }
 
   ///Takes keyboard input and sets [mode] accordingly
-  void handleKeyInput(input) {
-    if ((input.isControlPressed || input.isMetaPressed) &&
-        FocusManager.instance.primaryFocus is TextInput) {
+  void handleKeyInput(RawKeyEvent input) {
+    if (input.isAltPressed) {
       setState(() {
         selectionMode = true;
       });
