@@ -47,15 +47,23 @@ class VSNodeManager {
     _nodes = Map.from(_nodes);
   }
 
-  ///Removes a node and clears all references
-  void removeNode(VSNodeData nodeData) async {
-    _nodes = Map.from(_nodes..remove(nodeData.id));
+  ///Removes multiple nodes and clears all references
+  void removeNodes(List<VSNodeData> nodeDatas) async {
+    for (final node in nodeDatas) {
+      _nodes.remove(node.id);
+    }
+    _nodes = Map.from(_nodes);
     for (final node in _nodes.values) {
       for (final input in node.inputData) {
-        if (input.connectedNode?.nodeData == nodeData) {
+        if (nodeDatas.contains(input.connectedNode?.nodeData)) {
           input.connectedNode = null;
         }
       }
     }
+  }
+
+  ///Cleares all nodes
+  void clearNodes() async {
+    _nodes = {};
   }
 }

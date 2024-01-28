@@ -82,11 +82,19 @@ class VSNodeDataProvider extends ChangeNotifier {
     updateOrCreateNodes(modifiedNodes);
   }
 
-  ///Removes a node
+  ///Removes multiple nodes
   ///
   ///Notifies listeners to this provider
-  void removeNode(VSNodeData nodeData) async {
-    nodeManger.removeNode(nodeData);
+  void removeNodes(List<VSNodeData> nodeDatas) async {
+    nodeManger.removeNodes(nodeDatas);
+    notifyListeners();
+  }
+
+  ///Cleares all nodes
+  ///
+  ///Notifies listeners to this provider
+  void clearNodes() async {
+    nodeManger.clearNodes();
     notifyListeners();
   }
 

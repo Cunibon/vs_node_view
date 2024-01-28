@@ -80,9 +80,9 @@ class _VSNodeTitleState extends State<VSNodeTitle> {
                     );
                     break;
                   case PopupOptions.delete:
-                    context.read<VSNodeDataProvider>().removeNode(
-                          widget.data,
-                        );
+                    context.read<VSNodeDataProvider>().removeNodes(
+                      [widget.data],
+                    );
                     break;
                 }
               },
