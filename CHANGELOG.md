@@ -1,3 +1,9 @@
+## 1.0.2
+
+* Fixed deserialization sometimes failing for "int" that should be double
+* Moved selection button to "Alt" as it intervered with inputs
+* Added clearNodes and removeNodes functions
+
 ## 1.0.1
 
 * Added demo to README
