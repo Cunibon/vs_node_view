@@ -50,7 +50,8 @@ class _VSSelectionAreaState extends State<VSSelectionArea> {
 
   ///Takes keyboard input and sets [mode] accordingly
   void handleKeyInput(input) {
-    if (input.isControlPressed || input.isMetaPressed) {
+    if ((input.isControlPressed || input.isMetaPressed) &&
+        FocusManager.instance.primaryFocus == null) {
       setState(() {
         selectionMode = true;
       });
