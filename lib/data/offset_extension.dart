@@ -10,8 +10,10 @@ extension ToJson on Offset {
 }
 
 Offset offsetFromJson(Map<String, dynamic> data) {
+  final dx = (data["dx"] as num).toDouble();
+  final dy = (data["dy"] as num).toDouble();
   return Offset(
-    data["dx"],
-    data["dy"],
+    dx,
+    dy,
   );
 }
