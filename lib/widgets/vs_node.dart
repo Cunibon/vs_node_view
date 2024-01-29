@@ -17,6 +17,7 @@ class VSNode extends StatefulWidget {
     super.key,
   });
 
+  ///The data the widget will use to build the UI
   final VSNodeData data;
 
   ///Width of the node

@@ -50,6 +50,14 @@ class VSNodeDataProvider extends ChangeNotifier {
   ///Node data map in this format: {NodeData.id: NodeData}
   Map<String, VSNodeData> get nodes => nodeManger.nodes;
 
+  ///Loades nodes from string and replaces current nodes
+  ///
+  ///Notifies listeners to this provider
+  void loadSerializedNodes(String serializedNodes) {
+    nodeManger.loadSerializedNodes(serializedNodes);
+    notifyListeners();
+  }
+
   ///Updates existing nodes or creates them
   ///
   ///Notifies listeners to this provider

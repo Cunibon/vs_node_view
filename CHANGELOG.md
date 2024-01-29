@@ -1,3 +1,8 @@
+## 1.1.0
+
+* Added loadSerializedNodes function
+* 
+
 ## 1.0.2
 
 * Fixed deserialization sometimes failing for "int" that should be double

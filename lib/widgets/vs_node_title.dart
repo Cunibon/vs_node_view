@@ -44,26 +44,29 @@ class _VSNodeTitleState extends State<VSNodeTitle> {
         Row(
           children: [
             Expanded(
-              child: TextField(
-                readOnly: !isRenaming,
-                controller: titleController,
-                focusNode: focusNode,
-                textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 15),
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: widget.data.type,
-                  isDense: true,
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 0,
-                    vertical: 5,
+              child: Tooltip(
+                message: widget.data.toolTip,
+                child: TextField(
+                  readOnly: !isRenaming,
+                  controller: titleController,
+                  focusNode: focusNode,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontSize: 15),
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: widget.data.type,
+                    isDense: true,
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 0,
+                      vertical: 5,
+                    ),
                   ),
+                  onTapOutside: (event) => setState(() {
+                    isRenaming = false;
+                    titleController.text = widget.data.title;
+                  }),
+                  onSubmitted: (input) => widget.data.title = input,
                 ),
-                onTapOutside: (event) => setState(() {
-                  isRenaming = false;
-                  titleController.text = widget.data.title;
-                }),
-                onSubmitted: (input) => widget.data.title = input,
               ),
             ),
             PopupMenuButton<PopupOptions>(

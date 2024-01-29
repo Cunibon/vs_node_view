@@ -39,6 +39,24 @@ class VSNodeManager {
     return serializationManager.serializeNodes(_nodes);
   }
 
+  ///Loades nodes from string and replaces current nodes
+  void loadSerializedNodes(String serializedNodes) {
+    final deserializedNodes =
+        serializationManager.deserializeNodes(serializedNodes);
+
+    removeNodes(
+      nodes.keys
+          .toSet()
+          .difference(deserializedNodes.keys.toSet())
+          .map((e) => nodes[e]!)
+          .toList(),
+    );
+
+    updateOrCreateNodes(
+      deserializedNodes.values.toList(),
+    );
+  }
+
   ///Updates or Creates a nodes
   void updateOrCreateNodes(List<VSNodeData> nodeDatas) async {
     for (final node in nodeDatas) {

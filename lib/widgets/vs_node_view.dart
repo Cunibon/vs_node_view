@@ -18,6 +18,7 @@ class VSNodeView extends StatelessWidget {
     this.nodeTitleBuilder,
     this.enableSelectionArea = true,
     this.selectionAreaBuilder,
+    this.gestureDetectorBuilder,
     super.key,
   });
 
@@ -59,6 +60,14 @@ class VSNodeView extends StatelessWidget {
     Widget view,
   )? selectionAreaBuilder;
 
+  ///Can be used to override the GestureDetector
+  ///
+  ///See [VSNodeDataProvider.closeContextMenu], [VSNodeDataProvider.openContextMenu] and [VSNodeDataProvider.selectedNodes]
+  final GestureDetector Function(
+    BuildContext context,
+    VSNodeDataProvider nodeDataProvider,
+  )? gestureDetectorBuilder;
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -87,17 +96,18 @@ class VSNodeView extends StatelessWidget {
 
           final view = Stack(
             children: [
-              GestureDetector(
-                onTapDown: (details) {
-                  nodeDataProvider.closeContextMenu();
-                  nodeDataProvider.selectedNodes = {};
-                },
-                onSecondaryTapUp: (details) {
-                  nodeDataProvider.openContextMenu(
-                    position: details.globalPosition,
-                  );
-                },
-              ),
+              gestureDetectorBuilder?.call(context, nodeDataProvider) ??
+                  GestureDetector(
+                    onTapDown: (details) {
+                      nodeDataProvider.closeContextMenu();
+                      nodeDataProvider.selectedNodes = {};
+                    },
+                    onSecondaryTapUp: (details) {
+                      nodeDataProvider.openContextMenu(
+                        position: details.globalPosition,
+                      );
+                    },
+                  ),
               ...nodes,
               if (nodeDataProvider.contextMenuContext != null)
                 Positioned(

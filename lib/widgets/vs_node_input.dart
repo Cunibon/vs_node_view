@@ -116,7 +116,10 @@ class _VSNodeInputState extends State<VSNodeInput> {
             },
           ),
         ),
-        Text(widget.data.name),
+        Tooltip(
+          message: widget.data.toolTip,
+          child: Text(widget.data.name),
+        ),
       ],
     );
   }
