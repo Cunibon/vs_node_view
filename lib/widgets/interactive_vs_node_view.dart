@@ -25,6 +25,7 @@ class InteractiveVSNodeView extends StatefulWidget {
     this.nodeTitleBuilder,
     this.enableSelectionArea = true,
     this.selectionAreaBuilder,
+    this.gestureDetectorBuilder,
     required this.nodeDataProvider,
   });
 
@@ -94,6 +95,14 @@ class InteractiveVSNodeView extends StatefulWidget {
     Widget view,
   )? selectionAreaBuilder;
 
+  ///Can be used to override the GestureDetector
+  ///
+  ///See [VSNodeDataProvider.closeContextMenu], [VSNodeDataProvider.openContextMenu] and [VSNodeDataProvider.selectedNodes]
+  final GestureDetector Function(
+    BuildContext context,
+    VSNodeDataProvider nodeDataProvider,
+  )? gestureDetectorBuilder;
+
   @override
   State<InteractiveVSNodeView> createState() => _InteractiveVSNodeViewState();
 }
@@ -147,6 +156,7 @@ class _InteractiveVSNodeViewState extends State<InteractiveVSNodeView> {
           nodeTitleBuilder: widget.nodeTitleBuilder,
           enableSelectionArea: widget.enableSelectionArea,
           selectionAreaBuilder: widget.selectionAreaBuilder,
+          gestureDetectorBuilder: widget.gestureDetectorBuilder,
         ),
       ),
     );

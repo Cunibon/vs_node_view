@@ -5,11 +5,15 @@ import 'package:vs_node_view/data/vs_node_data.dart';
 ///Base interface class
 ///Used for base input and output interface
 abstract class VSInterfaceData {
-  VSInterfaceData({required this.name});
+  VSInterfaceData({
+    required this.name,
+    this.toolTip,
+  });
 
   Color get interfaceColor;
 
   final String name;
+  final String? toolTip;
   late VSNodeData nodeData;
   Offset? widgetOffset;
 }
@@ -20,6 +24,7 @@ abstract class VSInterfaceData {
 abstract class VSInputData extends VSInterfaceData {
   VSInputData({
     required super.name,
+    super.toolTip,
     VSOutputData? initialConnection,
   }) {
     connectedNode = initialConnection;
@@ -52,6 +57,7 @@ abstract class VSInputData extends VSInterfaceData {
 abstract class VSOutputData<T> extends VSInterfaceData {
   VSOutputData({
     required super.name,
+    super.toolTip,
     this.outputFunction,
   });
 

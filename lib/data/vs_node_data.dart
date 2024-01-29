@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/gestures.dart';
 import 'package:vs_node_view/data/offset_extension.dart';
 import 'package:vs_node_view/data/vs_interface.dart';
+import 'package:vs_node_view/data/vs_node_manager.dart';
 
 const _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
 Random _rnd = Random();
@@ -22,6 +23,7 @@ class VSNodeData {
     required this.widgetOffset,
     required this.inputData,
     required this.outputData,
+    this.toolTip,
     String? title,
   })  : _id = id ?? _getRandomString(10),
         _title = title ?? "" {
@@ -33,16 +35,33 @@ class VSNodeData {
     }
   }
 
-  String _id;
+  ///The nodes ID
+  ///
+  ///Used inside [VSNodeManager] as a key for nodes
   String get id => _id;
+  String _id;
+
+  ///The type of this node
+  ///
+  ///Important for deserialization
   final String type;
+
+  ///The current offset of the widget from the origin (Top-Left corner)
   Offset widgetOffset;
+
+  ///The input interfaces of this node
   Iterable<VSInputData> inputData;
+
+  ///The output interfaces of this node
   Iterable<VSOutputData> outputData;
 
-  String _title = "";
+  ///The title displayed on the node
   String get title => _title.isNotEmpty ? _title : type;
   set title(String data) => _title = data;
+  String _title = "";
+
+  ///A tooltip displayed on the widget
+  final String? toolTip;
 
   Map<String, dynamic> toJson() {
     return {
