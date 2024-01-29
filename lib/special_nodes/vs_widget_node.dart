@@ -15,6 +15,7 @@ class VSWidgetNode extends VSNodeData {
     required this.getValue,
     required this.child,
     String? title,
+    String? toolTip,
   }) : super(
           id: id,
           type: type,
@@ -22,6 +23,7 @@ class VSWidgetNode extends VSNodeData {
           inputData: const [],
           outputData: [outputData],
           title: title,
+          toolTip: toolTip,
         );
 
   @override
