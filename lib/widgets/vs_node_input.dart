@@ -74,6 +74,9 @@ class _VSNodeInputState extends State<VSNodeInput> {
     final icon = widget.data.connectedNode == null
         ? Icons.radio_button_unchecked
         : Icons.radio_button_checked;
+
+    final nodeText = Text(widget.data.name);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -116,10 +119,13 @@ class _VSNodeInputState extends State<VSNodeInput> {
             },
           ),
         ),
-        Tooltip(
-          message: widget.data.toolTip,
-          child: Text(widget.data.name),
-        ),
+        if (widget.data.toolTip == null)
+          nodeText
+        else
+          Tooltip(
+            message: widget.data.toolTip,
+            child: nodeText,
+          ),
       ],
     );
   }

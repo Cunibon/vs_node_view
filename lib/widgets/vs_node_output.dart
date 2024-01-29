@@ -55,12 +55,16 @@ class _VSNodeOutputState extends State<VSNodeOutput> {
 
   @override
   Widget build(BuildContext context) {
+    final nodeText = Text(widget.data.name);
+
     final firstItem = widget.data.nodeData is VSWidgetNode
         ? (widget.data.nodeData as VSWidgetNode).child
-        : Tooltip(
-            message: widget.data.toolTip,
-            child: Text(widget.data.name),
-          );
+        : widget.data.toolTip == null
+            ? nodeText
+            : Tooltip(
+                message: widget.data.toolTip,
+                child: nodeText,
+              );
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
