@@ -6,7 +6,9 @@ const Color _interfaceColor = Colors.grey;
 class VSDynamicInputData extends VSInputData {
   ///Basic dynamic input interface
   VSDynamicInputData({
-    required super.name,
+    required super.type,
+    super.title,
+    super.toolTip,
     super.initialConnection,
   });
 
@@ -25,7 +27,9 @@ class VSDynamicInputData extends VSInputData {
 class VSDynamicOutputData extends VSOutputData<dynamic> {
   ///Basic dynamic output interface
   VSDynamicOutputData({
-    required super.name,
+    required super.type,
+    super.title,
+    super.toolTip,
     super.outputFunction,
   });
 

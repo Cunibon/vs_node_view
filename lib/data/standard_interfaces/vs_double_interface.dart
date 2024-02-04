@@ -7,7 +7,9 @@ const Color _interfaceColor = Colors.red;
 class VSDoubleInputData extends VSInputData {
   ///Basic double input interface
   VSDoubleInputData({
-    required super.name,
+    required super.type,
+    super.title,
+    super.toolTip,
     super.initialConnection,
   });
 
@@ -21,7 +23,9 @@ class VSDoubleInputData extends VSInputData {
 class VSDoubleOutputData extends VSOutputData<double> {
   ///Basic double output interface
   VSDoubleOutputData({
-    required super.name,
+    required super.type,
+    super.title,
+    super.toolTip,
     super.outputFunction,
   });
 

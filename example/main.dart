@@ -44,13 +44,13 @@ class _VSNodeExampleState extends State<VSNodeExample> {
                 widgetOffset: offset,
                 inputData: [
                   VSStringInputData(
-                    name: "Input",
+                    type: "Input",
                     initialConnection: ref,
                   )
                 ],
                 outputData: [
                   VSIntOutputData(
-                    name: "Output",
+                    type: "Output",
                     outputFunction: (data) => int.parse(data["Input"]),
                   ),
                 ],
@@ -60,17 +60,17 @@ class _VSNodeExampleState extends State<VSNodeExample> {
                 widgetOffset: offset,
                 inputData: [
                   VSNumInputData(
-                    name: "Input 1",
+                    type: "Input 1",
                     initialConnection: ref,
                   ),
                   VSNumInputData(
-                    name: "Input 2",
+                    type: "Input 2",
                     initialConnection: ref,
                   )
                 ],
                 outputData: [
                   VSNumOutputData(
-                    name: "output",
+                    type: "output",
                     outputFunction: (data) {
                       return (data["Input 1"] ?? 0) + (data["Input 2"] ?? 0);
                     },
@@ -87,17 +87,17 @@ class _VSNodeExampleState extends State<VSNodeExample> {
                 widgetOffset: offset,
                 inputData: [
                   VSNumInputData(
-                    name: "First",
+                    type: "First",
                     initialConnection: ref,
                   ),
                   VSNumInputData(
-                    name: "Second",
+                    type: "Second",
                     initialConnection: ref,
                   ),
                 ],
                 outputData: [
                   VSBoolOutputData(
-                    name: "Output",
+                    type: "Output",
                     outputFunction: (data) => data["First"] > data["Second"],
                   ),
                 ],
@@ -107,21 +107,21 @@ class _VSNodeExampleState extends State<VSNodeExample> {
                 widgetOffset: offset,
                 inputData: [
                   VSBoolInputData(
-                    name: "Input",
+                    type: "Input",
                     initialConnection: ref,
                   ),
                   VSDynamicInputData(
-                    name: "True",
+                    type: "True",
                     initialConnection: ref,
                   ),
                   VSDynamicInputData(
-                    name: "False",
+                    type: "False",
                     initialConnection: ref,
                   ),
                 ],
                 outputData: [
                   VSDynamicOutputData(
-                    name: "Output",
+                    type: "Output",
                     outputFunction: (data) =>
                         data["Input"] ? data["True"] : data["False"],
                   ),
@@ -143,7 +143,7 @@ class _VSNodeExampleState extends State<VSNodeExample> {
           type: "Input",
           widgetOffset: offset,
           outputData: VSStringOutputData(
-            name: "Output",
+            type: "Output",
             outputFunction: (data) => controller.text,
           ),
           child: Expanded(child: input),
@@ -221,12 +221,12 @@ class _VSNodeExampleState extends State<VSNodeExample> {
 }
 
 Map<String, Color> inputTypes = {
-  "String": VSStringInputData(name: "legend").interfaceColor,
-  "Int": VSIntInputData(name: "legend").interfaceColor,
-  "Double": VSDoubleInputData(name: "legend").interfaceColor,
-  "Num": VSNumInputData(name: "legend").interfaceColor,
-  "Bool": VSBoolInputData(name: "legend").interfaceColor,
-  "Dynamic": VSDynamicInputData(name: "legend").interfaceColor,
+  "String": VSStringInputData(type: "legend").interfaceColor,
+  "Int": VSIntInputData(type: "legend").interfaceColor,
+  "Double": VSDoubleInputData(type: "legend").interfaceColor,
+  "Num": VSNumInputData(type: "legend").interfaceColor,
+  "Bool": VSBoolInputData(type: "legend").interfaceColor,
+  "Dynamic": VSDynamicInputData(type: "legend").interfaceColor,
 };
 
 class Legend extends StatelessWidget {

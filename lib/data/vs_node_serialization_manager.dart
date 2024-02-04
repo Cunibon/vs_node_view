@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:vs_node_view/common.dart';
 import 'package:vs_node_view/data/offset_extension.dart';
 import 'package:vs_node_view/data/vs_interface.dart';
 import 'package:vs_node_view/data/vs_node_data.dart';
-import 'package:vs_node_view/data/vs_node_data_provider.dart';
 import 'package:vs_node_view/data/vs_subgroup.dart';
 import 'package:vs_node_view/special_nodes/vs_widget_node.dart';
 
@@ -38,13 +38,13 @@ class VSNodeSerializationManager {
       } else {
         final instance = builder(Offset.zero, null) as VSNodeData;
         if (!_nodeBuilders.containsKey(instance.type)) {
-          final inputNames = instance.inputData.map((e) => e.name);
+          final inputNames = instance.inputData.map((e) => e.type);
           if (inputNames.length != inputNames.toSet().length) {
             throw FormatException(
               "There are 2 or more Inputs in the node ${instance.type} with the same name. There can only be one",
             );
           }
-          final outputNames = instance.outputData.map((e) => e.name);
+          final outputNames = instance.outputData.map((e) => e.type);
           if (outputNames.length != outputNames.toSet().length) {
             throw FormatException(
               "There are 2 or more Outputs in the node ${instance.type} with the same name. There can only be one",
@@ -108,7 +108,7 @@ class VSNodeSerializationManager {
         if (serializedOutput != null) {
           final refOutput =
               decoded[serializedOutput["nodeData"]]?.outputData.firstWhere(
-                    (element) => element.name == serializedOutput["name"],
+                    (element) => element.type == serializedOutput["name"],
                   );
           inputRefs[element["name"]] = refOutput;
         }

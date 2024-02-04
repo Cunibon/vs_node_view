@@ -56,6 +56,8 @@ class VSNodeData {
   Iterable<VSOutputData> outputData;
 
   ///The title displayed on the node
+  ///
+  ///Usefull for localization
   String get title => _title.isNotEmpty ? _title : type;
   set title(String data) => _title = data;
   String _title = "";
@@ -94,7 +96,7 @@ class VSNodeData {
   ///Maps inputRefs to the corresponding connection inside this node
   void setRefData(Map<String, VSOutputData?> inputRefs) {
     Map<String, VSInputData> inputMap = {
-      for (final element in inputData) element.name: element
+      for (final element in inputData) element.type: element
     };
 
     for (final ref in inputRefs.entries) {

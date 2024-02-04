@@ -45,6 +45,9 @@ There are 6 base interfaces which each have an Input and Output varient:
 * num (As an Input: Will take int, double, num and dynamic Outputs)
 * string (As an Input: Will take string and dynamic Outputs)
 
+All interfaces have a "type", type will be used for deserialization and should not be changed if it already reached production, as deserialization will fail.
+Use "title" to add localization independent of serialization. 
+
 Lets look at how you can define your own interface if you want to use your own class for visual scripting
 
 ```dart
@@ -53,10 +56,12 @@ Lets look at how you can define your own interface if you want to use your own c
 const Color _interfaceColor = Colors.pink;
 
 ///This is your input Interface
-///It need to extend VSInputData and provide name and initialConnection to its super
+///It need to extend VSInputData and provide type and initialConnection to its super
 class MyFirstInputData extends VSInputData {
   MyFirstInputData({
-    required super.name,
+    required super.type,
+    super.title,
+    super.toolTip,
     super.initialConnection,
   });
 
@@ -75,10 +80,12 @@ class MyFirstInputData extends VSInputData {
 ///This is your output Interface
 ///It need to extend VSOutputData with a Type 
 ///The Type defines what the attached output function will return
-///You need to pass name and outputFunction to the super
+///You need to pass type and outputFunction to the super
 class MyFirstOutputData extends VSOutputData<MyCoolClass> {
   MyFirstOutputData({
-    required super.name,
+    required super.type,
+    super.title,
+    super.toolTip,
     super.outputFunction,
   });
 
@@ -242,7 +249,7 @@ final List<dynamic> nodeBuilders = [
 ];
 ```
 
-This way you UI could look something like this:
+This way your UI could look something like this:
 
 <p>
   <img src="https://firebon.de:8081/VSDemo/ContextMenu.png"

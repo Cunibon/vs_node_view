@@ -13,12 +13,14 @@ class VSOutputNode extends VSNodeData {
     VSOutputData? ref,
     String? title,
     String? toolTip,
+    String? inputTitle,
   }) : super(
           type: type,
           widgetOffset: widgetOffset,
           inputData: [
             VSDynamicInputData(
-              name: type,
+              type: type,
+              title: inputTitle,
               initialConnection: ref,
             )
           ],
@@ -62,11 +64,11 @@ class VSOutputNode extends VSNodeData {
           );
         }
 
-        inputValues[input.name] = connectedNode.outputFunction?.call(
+        inputValues[input.type] = connectedNode.outputFunction?.call(
           nodeInputValues[connectedNode.nodeData.id]!,
         );
       } else {
-        inputValues[input.name] = null;
+        inputValues[input.type] = null;
       }
     }
     nodeInputValues[data.id] = inputValues;

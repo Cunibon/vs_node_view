@@ -7,7 +7,9 @@ const Color _interfaceColor = Colors.blue;
 class VSIntInputData extends VSInputData {
   ///Basic int input interface
   VSIntInputData({
-    required super.name,
+    required super.type,
+    super.title,
+    super.toolTip,
     super.initialConnection,
   });
 
@@ -21,7 +23,9 @@ class VSIntInputData extends VSInputData {
 class VSIntOutputData extends VSOutputData<int> {
   ///Basic int output interface
   VSIntOutputData({
-    required super.name,
+    required super.type,
+    super.title,
+    super.toolTip,
     super.outputFunction,
   });
 

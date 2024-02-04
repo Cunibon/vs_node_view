@@ -6,7 +6,9 @@ const Color _interfaceColor = Colors.green;
 class VSStringInputData extends VSInputData {
   ///Basic String input interface
   VSStringInputData({
-    required super.name,
+    required super.type,
+    super.title,
+    super.toolTip,
     super.initialConnection,
   });
 
@@ -20,7 +22,9 @@ class VSStringInputData extends VSInputData {
 class VSStringOutputData extends VSOutputData<String> {
   ///Basic String output interface
   VSStringOutputData({
-    required super.name,
+    required super.type,
+    super.title,
+    super.toolTip,
     super.outputFunction,
   });
 

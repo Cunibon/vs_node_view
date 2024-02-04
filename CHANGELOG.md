@@ -1,7 +1,11 @@
 ## 1.1.0
 
+* Breaking:
+* Split "name" of interfaces into "type" and "title" (Allows for localization without breaking serialization)
+
 * Added loadSerializedNodes function
-* 
+* Added tooltips to nodes and interfaces
+* Exposed GestureDetector to allow for customization
 
 ## 1.0.2
 

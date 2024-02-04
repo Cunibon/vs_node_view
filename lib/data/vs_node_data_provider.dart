@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:vs_node_view/common.dart';
 import 'package:vs_node_view/data/vs_interface.dart';
 import 'package:vs_node_view/data/vs_node_data.dart';
 import 'package:vs_node_view/data/vs_node_manager.dart';
-
-typedef VSNodeDataBuilder = VSNodeData Function(Offset, VSOutputData?);
 
 ///Small data class to keep track of where the context menu is in 2D space
 ///

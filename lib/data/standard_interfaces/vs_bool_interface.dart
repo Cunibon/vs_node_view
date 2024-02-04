@@ -6,7 +6,9 @@ const Color _interfaceColor = Colors.orange;
 class VSBoolInputData extends VSInputData {
   ///Basic boolean input interface
   VSBoolInputData({
-    required super.name,
+    required super.type,
+    super.title,
+    super.toolTip,
     super.initialConnection,
   });
 
@@ -20,7 +22,9 @@ class VSBoolInputData extends VSInputData {
 class VSBoolOutputData extends VSOutputData<bool> {
   ///Basic boolean output interface
   VSBoolOutputData({
-    required super.name,
+    required super.type,
+    super.title,
+    super.toolTip,
     super.outputFunction,
   });
 

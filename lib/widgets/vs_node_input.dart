@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:vs_node_view/common.dart';
 import 'package:vs_node_view/data/vs_interface.dart';
 import 'package:vs_node_view/data/vs_node_data_provider.dart';
 import 'package:vs_node_view/widgets/gradiant_line_drawer.dart';
-
-const centerOffset = Offset(7.5, 7.5);
 
 class VSNodeInput extends StatefulWidget {
   ///Base node input widget
@@ -59,7 +58,7 @@ class _VSNodeInputState extends State<VSNodeInput> {
         outputData.nodeData.widgetOffset -
         widget.data.nodeData.widgetOffset -
         widget.data.widgetOffset! +
-        centerOffset;
+        interfaceCenterOffset;
   }
 
   void updateConnectedNode(VSOutputData? data) {
@@ -75,14 +74,12 @@ class _VSNodeInputState extends State<VSNodeInput> {
         ? Icons.radio_button_unchecked
         : Icons.radio_button_checked;
 
-    final nodeText = Text(widget.data.name);
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         CustomPaint(
           foregroundPainter: GradientLinePainter(
-            startPoint: centerOffset,
+            startPoint: interfaceCenterOffset,
             endPoint: updateLinePosition(
               widget.data.connectedNode,
             ),
@@ -99,11 +96,14 @@ class _VSNodeInputState extends State<VSNodeInput> {
                 onTap: () {
                   updateConnectedNode(null);
                 },
-                child: Icon(
-                  icon,
-                  key: _anchor,
-                  color: widget.data.interfaceColor,
-                  size: 15,
+                child: wrapWithToolTip(
+                  toolTip: widget.data.toolTip,
+                  child: Icon(
+                    icon,
+                    key: _anchor,
+                    color: widget.data.interfaceColor,
+                    size: 15,
+                  ),
                 ),
               );
             },
@@ -119,13 +119,7 @@ class _VSNodeInputState extends State<VSNodeInput> {
             },
           ),
         ),
-        if (widget.data.toolTip == null)
-          nodeText
-        else
-          Tooltip(
-            message: widget.data.toolTip,
-            child: nodeText,
-          ),
+        Text(widget.data.title),
       ],
     );
   }

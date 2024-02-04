@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:vs_node_view/common.dart';
 import 'package:vs_node_view/data/vs_interface.dart';
 import 'package:vs_node_view/data/vs_node_data_provider.dart';
 import 'package:vs_node_view/special_nodes/vs_widget_node.dart';
 import 'package:vs_node_view/widgets/gradiant_line_drawer.dart';
-import 'package:vs_node_view/widgets/vs_node_input.dart';
 
 class VSNodeOutput extends StatefulWidget {
   ///Base node output widget
@@ -55,16 +55,9 @@ class _VSNodeOutputState extends State<VSNodeOutput> {
 
   @override
   Widget build(BuildContext context) {
-    final nodeText = Text(widget.data.name);
-
     final firstItem = widget.data.nodeData is VSWidgetNode
         ? (widget.data.nodeData as VSWidgetNode).child
-        : widget.data.toolTip == null
-            ? nodeText
-            : Tooltip(
-                message: widget.data.toolTip,
-                child: nodeText,
-              );
+        : Text(widget.data.title);
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -72,7 +65,7 @@ class _VSNodeOutputState extends State<VSNodeOutput> {
         firstItem,
         CustomPaint(
           foregroundPainter: GradientLinePainter(
-            startPoint: centerOffset,
+            startPoint: interfaceCenterOffset,
             endPoint: dragPos,
             startColor: widget.data.interfaceColor,
             endColor: widget.data.interfaceColor,
@@ -95,11 +88,14 @@ class _VSNodeOutputState extends State<VSNodeOutput> {
               color: widget.data.interfaceColor,
               size: 15,
             ),
-            child: Icon(
-              Icons.circle,
-              key: _anchor,
-              color: widget.data.interfaceColor,
-              size: 15,
+            child: wrapWithToolTip(
+              toolTip: widget.data.toolTip,
+              child: Icon(
+                Icons.circle,
+                key: _anchor,
+                color: widget.data.interfaceColor,
+                size: 15,
+              ),
             ),
           ),
         ),
