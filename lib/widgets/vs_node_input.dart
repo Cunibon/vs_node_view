@@ -23,7 +23,7 @@ class VSNodeInput extends StatefulWidget {
 }
 
 class _VSNodeInputState extends State<VSNodeInput> {
-  late RenderBox renderBox;
+  RenderBox? renderBox;
   final GlobalKey _anchor = GlobalKey();
 
   @override
@@ -48,7 +48,7 @@ class _VSNodeInputState extends State<VSNodeInput> {
         outputData.nodeData.widgetOffset -
         widget.data.nodeData.widgetOffset -
         widget.data.widgetOffset! +
-        interfaceCenterOffset;
+        getWidgetCenter(renderBox);
   }
 
   void updateConnectedNode(VSOutputData? data) {
@@ -60,16 +60,12 @@ class _VSNodeInputState extends State<VSNodeInput> {
 
   @override
   Widget build(BuildContext context) {
-    final icon = widget.data.connectedNode == null
-        ? Icons.radio_button_unchecked
-        : Icons.radio_button_checked;
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         CustomPaint(
           foregroundPainter: GradientLinePainter(
-            startPoint: interfaceCenterOffset,
+            startPoint: getWidgetCenter(renderBox),
             endPoint: updateLinePosition(
               widget.data.connectedNode,
             ),
@@ -88,11 +84,9 @@ class _VSNodeInputState extends State<VSNodeInput> {
                 },
                 child: wrapWithToolTip(
                   toolTip: widget.data.toolTip,
-                  child: Icon(
-                    icon,
-                    key: _anchor,
-                    color: widget.data.interfaceColor,
-                    size: 15,
+                  child: widget.data.getInterfaceIcon(
+                    context: context,
+                    anchor: _anchor,
                   ),
                 ),
               );

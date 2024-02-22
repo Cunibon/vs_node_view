@@ -7,12 +7,22 @@ import 'package:vs_node_view/data/vs_node_data.dart';
 abstract class VSInterfaceData {
   VSInterfaceData({
     required this.type,
+    this.interfaceIconBuilder,
     String? title,
     this.toolTip,
   }) : _title = title ?? "";
 
   ///The color this interface will display in the UI
   Color get interfaceColor;
+
+  ///Can be used to insert you own interfaceIcon widget
+  ///
+  ///You need to pass anchor as the widget key for the lines to work correctly
+  Widget Function(
+    BuildContext context,
+    GlobalKey anchor,
+    VSInterfaceData data,
+  )? interfaceIconBuilder;
 
   ///The type of this interface
   ///
@@ -42,11 +52,37 @@ abstract class VSInterfaceData {
 abstract class VSInputData extends VSInterfaceData {
   VSInputData({
     required super.type,
+    super.interfaceIconBuilder,
     super.title,
     super.toolTip,
     VSOutputData? initialConnection,
   }) {
     connectedNode = initialConnection;
+  }
+
+  ///The Icon displayed for this interface
+  ///
+  ///Will use [interfaceColor] by default
+  ///
+  ///Will switch between [Icons.radio_button_unchecked] and [Icons.radio_button_checked] depending on if a node is connected to this interface
+  Widget getInterfaceIcon({
+    required BuildContext context,
+    required GlobalKey anchor,
+  }) {
+    if (interfaceIconBuilder != null) {
+      return interfaceIconBuilder!(context, anchor, this);
+    }
+
+    final icon = connectedNode == null
+        ? Icons.radio_button_unchecked
+        : Icons.radio_button_checked;
+
+    return Icon(
+      icon,
+      key: anchor,
+      color: interfaceColor,
+      size: 15,
+    );
   }
 
   VSOutputData? _connectedNode;
@@ -78,10 +114,30 @@ abstract class VSInputData extends VSInterfaceData {
 abstract class VSOutputData<T> extends VSInterfaceData {
   VSOutputData({
     required super.type,
+    super.interfaceIconBuilder,
     super.title,
     super.toolTip,
     this.outputFunction,
   });
+
+  ///The Icon displayed for this interface
+  ///
+  ///Will use [interfaceColor] and [Icons.circle] by default
+  Widget getInterfaceIcon({
+    required BuildContext context,
+    required GlobalKey anchor,
+  }) {
+    if (interfaceIconBuilder != null) {
+      return interfaceIconBuilder!(context, anchor, this);
+    }
+
+    return Icon(
+      Icons.circle,
+      key: anchor,
+      color: interfaceColor,
+      size: 15,
+    );
+  }
 
   ///The function this interface will execute on evaluation
   final T Function(Map<String, dynamic>)? outputFunction;

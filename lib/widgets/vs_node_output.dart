@@ -25,7 +25,7 @@ class VSNodeOutput extends StatefulWidget {
 
 class _VSNodeOutputState extends State<VSNodeOutput> {
   Offset? dragPos;
-  late RenderBox renderBox;
+  RenderBox? renderBox;
   final GlobalKey _anchor = GlobalKey();
 
   @override
@@ -42,7 +42,7 @@ class _VSNodeOutputState extends State<VSNodeOutput> {
   }
 
   void updateLinePosition(Offset newPosition) {
-    setState(() => dragPos = renderBox.globalToLocal(newPosition));
+    setState(() => dragPos = renderBox?.globalToLocal(newPosition));
   }
 
   @override
@@ -57,7 +57,7 @@ class _VSNodeOutputState extends State<VSNodeOutput> {
         firstItem,
         CustomPaint(
           foregroundPainter: GradientLinePainter(
-            startPoint: interfaceCenterOffset,
+            startPoint: getWidgetCenter(renderBox),
             endPoint: dragPos,
             startColor: widget.data.interfaceColor,
             endColor: widget.data.interfaceColor,
@@ -82,11 +82,9 @@ class _VSNodeOutputState extends State<VSNodeOutput> {
             ),
             child: wrapWithToolTip(
               toolTip: widget.data.toolTip,
-              child: Icon(
-                Icons.circle,
-                key: _anchor,
-                color: widget.data.interfaceColor,
-                size: 15,
+              child: widget.data.getInterfaceIcon(
+                context: context,
+                anchor: _anchor,
               ),
             ),
           ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:vs_node_view/data/offset_extension.dart';
 import 'package:vs_node_view/data/vs_interface.dart';
 import 'package:vs_node_view/data/vs_node_data.dart';
 import 'package:vs_node_view/data/vs_node_data_provider.dart';
@@ -38,4 +39,5 @@ Widget wrapWithToolTip({
         );
 }
 
-const interfaceCenterOffset = Offset(7.5, 7.5);
+Offset getWidgetCenter(RenderBox? renderBox) =>
+    renderBox != null ? (renderBox.size.toOffset() / 2) : Offset.zero;

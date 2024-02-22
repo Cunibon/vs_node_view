@@ -17,3 +17,9 @@ Offset offsetFromJson(Map<String, dynamic> data) {
     dy,
   );
 }
+
+extension ToOffset on Size {
+  Offset toOffset() {
+    return Offset(width, height);
+  }
+}
