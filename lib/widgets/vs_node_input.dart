@@ -26,26 +26,16 @@ class _VSNodeInputState extends State<VSNodeInput> {
   late RenderBox renderBox;
   final GlobalKey _anchor = GlobalKey();
 
-  void findWidgetPosition() {
-    renderBox = _anchor.currentContext?.findRenderObject() as RenderBox;
-    Offset position = renderBox.localToGlobal(Offset.zero);
-
-    final provider = context.read<VSNodeDataProvider>();
-
-    widget.data.widgetOffset = provider.applyViewPortTransfrom(position) -
-        widget.data.nodeData.widgetOffset;
-
-    context
-        .read<VSNodeDataProvider>()
-        .updateOrCreateNodes([widget.data.nodeData]);
-  }
-
   @override
   void initState() {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      findWidgetPosition();
+      renderBox = findAndUpdateWidgetPosition(
+        widgetAnchor: _anchor,
+        context: context,
+        data: widget.data,
+      );
     });
   }
 
