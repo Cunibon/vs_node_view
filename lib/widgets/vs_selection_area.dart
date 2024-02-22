@@ -39,24 +39,26 @@ class _VSSelectionAreaState extends State<VSSelectionArea> {
     super.initState();
 
     provider = context.read<VSNodeDataProvider>();
-    RawKeyboard.instance.addListener(handleKeyInput);
+    HardwareKeyboard.instance.addHandler(handleKeyInput);
   }
 
   @override
   void dispose() {
     super.dispose();
-    RawKeyboard.instance.removeListener(handleKeyInput);
+    HardwareKeyboard.instance.removeHandler(handleKeyInput);
   }
 
   ///Takes keyboard input and sets [mode] accordingly
-  void handleKeyInput(RawKeyEvent input) {
-    if (input.isAltPressed) {
+  bool handleKeyInput(KeyEvent input) {
+    if (HardwareKeyboard.instance.isAltPressed) {
       setState(() {
         selectionMode = true;
       });
     } else {
       resetState();
     }
+
+    return false;
   }
 
   ///Takes user input and sets [topLeftPos] an [bottomRightPos] accordingly
