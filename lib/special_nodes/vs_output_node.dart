@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vs_node_view/data/standard_interfaces/vs_dynamic_interface.dart';
 import 'package:vs_node_view/data/vs_interface.dart';
 import 'package:vs_node_view/data/vs_node_data.dart';
+import 'package:vs_node_view/special_nodes/vs_list_node.dart';
 
 class VSOutputNode extends VSNodeData {
   ///Output Node
@@ -14,6 +15,7 @@ class VSOutputNode extends VSNodeData {
     String? title,
     String? toolTip,
     String? inputTitle,
+    Function(VSInputData interfaceData)? onUpdatedConnection,
   }) : super(
           type: type,
           widgetOffset: widgetOffset,
@@ -27,6 +29,7 @@ class VSOutputNode extends VSNodeData {
           outputData: const [],
           title: title,
           toolTip: toolTip,
+          onUpdatedConnection: onUpdatedConnection,
         );
 
   ///Evalutes the tree from this node and returns the result
@@ -54,18 +57,21 @@ class VSOutputNode extends VSNodeData {
     VSNodeData data,
   ) {
     Map<String, dynamic> inputValues = {};
-    for (final input in data.inputData) {
-      final connectedNode = input.connectedNode;
+
+    final inputs = data is VSListNode ? data.getCleanInputs() : data.inputData;
+
+    for (final input in inputs) {
+      final connectedNode = input.connectedInterface;
       if (connectedNode != null) {
-        if (!nodeInputValues.containsKey(connectedNode.nodeData.id)) {
+        if (!nodeInputValues.containsKey(connectedNode.nodeData!.id)) {
           _traverseInputNodes(
             nodeInputValues,
-            connectedNode.nodeData,
+            connectedNode.nodeData!,
           );
         }
 
         inputValues[input.type] = connectedNode.outputFunction?.call(
-          nodeInputValues[connectedNode.nodeData.id]!,
+          nodeInputValues[connectedNode.nodeData!.id]!,
         );
       } else {
         inputValues[input.type] = null;

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:vs_node_view/common.dart';
 import 'package:vs_node_view/data/vs_interface.dart';
 import 'package:vs_node_view/data/vs_node_data_provider.dart';
+import 'package:vs_node_view/special_nodes/vs_list_node.dart';
 import 'package:vs_node_view/widgets/gradiant_line_drawer.dart';
 
 class VSNodeInput extends StatefulWidget {
@@ -30,6 +31,19 @@ class _VSNodeInputState extends State<VSNodeInput> {
   void initState() {
     super.initState();
 
+    updateRenderBox();
+  }
+
+  @override
+  void didUpdateWidget(covariant VSNodeInput oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (widget.data.nodeData is VSListNode) {
+      updateRenderBox();
+    }
+  }
+
+  void updateRenderBox() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       renderBox = findAndUpdateWidgetPosition(
         widgetAnchor: _anchor,
@@ -45,16 +59,16 @@ class _VSNodeInputState extends State<VSNodeInput> {
     }
 
     return outputData!.widgetOffset! +
-        outputData.nodeData.widgetOffset -
-        widget.data.nodeData.widgetOffset -
+        outputData.nodeData!.widgetOffset -
+        widget.data.nodeData!.widgetOffset -
         widget.data.widgetOffset! +
         getWidgetCenter(renderBox);
   }
 
   void updateConnectedNode(VSOutputData? data) {
-    widget.data.connectedNode = data;
+    widget.data.connectedInterface = data;
     context.read<VSNodeDataProvider>().updateOrCreateNodes(
-      [widget.data.nodeData],
+      [widget.data.nodeData!],
     );
   }
 
@@ -67,10 +81,10 @@ class _VSNodeInputState extends State<VSNodeInput> {
           foregroundPainter: GradientLinePainter(
             startPoint: getWidgetCenter(renderBox),
             endPoint: updateLinePosition(
-              widget.data.connectedNode,
+              widget.data.connectedInterface,
             ),
             startColor: widget.data.interfaceColor,
-            endColor: widget.data.connectedNode?.interfaceColor,
+            endColor: widget.data.connectedInterface?.interfaceColor,
           ),
           child: DragTarget<VSOutputData>(
             builder: (

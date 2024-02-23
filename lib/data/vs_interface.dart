@@ -40,7 +40,7 @@ abstract class VSInterfaceData {
   final String? toolTip;
 
   ///The parent node of this interface
-  late VSNodeData nodeData;
+  VSNodeData? nodeData;
 
   ///The current offset of the interface relative to the origin of the parent (Top-Left corner)
   Offset? widgetOffset;
@@ -57,7 +57,7 @@ abstract class VSInputData extends VSInterfaceData {
     super.toolTip,
     VSOutputData? initialConnection,
   }) {
-    connectedNode = initialConnection;
+    connectedInterface = initialConnection;
   }
 
   ///The Icon displayed for this interface
@@ -73,7 +73,7 @@ abstract class VSInputData extends VSInterfaceData {
       return interfaceIconBuilder!(context, anchor, this);
     }
 
-    final icon = connectedNode == null
+    final icon = connectedInterface == null
         ? Icons.radio_button_unchecked
         : Icons.radio_button_checked;
 
@@ -85,11 +85,15 @@ abstract class VSInputData extends VSInterfaceData {
     );
   }
 
-  VSOutputData? _connectedNode;
-  VSOutputData? get connectedNode => _connectedNode;
-  set connectedNode(VSOutputData? data) {
+  ///The currently connected interface of this input
+  ///
+  ///Returns null if no interface is connected
+  VSOutputData? get connectedInterface => _connectedInterface;
+  VSOutputData? _connectedInterface;
+  set connectedInterface(VSOutputData? data) {
     if (data == null || acceptInput(data)) {
-      _connectedNode = data;
+      _connectedInterface = data;
+      nodeData?.onUpdatedConnection?.call(this);
     }
   }
 
@@ -105,7 +109,7 @@ abstract class VSInputData extends VSInterfaceData {
   Map<String, dynamic> toJson() {
     return {
       "name": type,
-      "connectedNode": connectedNode?.toJson(),
+      "connectedNode": connectedInterface?.toJson(),
     };
   }
 }
@@ -145,7 +149,7 @@ abstract class VSOutputData<T> extends VSInterfaceData {
   Map<String, dynamic> toJson() {
     return {
       "name": type,
-      "nodeData": nodeData.id,
+      "nodeData": nodeData?.id,
     };
   }
 }

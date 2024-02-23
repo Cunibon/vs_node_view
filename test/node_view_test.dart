@@ -83,7 +83,7 @@ void main() {
 
     expect(
       nodeDataProvider.nodeManger.getOutputNodes.first.inputData.first
-          .connectedNode!.nodeData,
+          .connectedInterface!.nodeData,
       input,
     );
   });
@@ -138,6 +138,6 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(output.inputData.first.connectedNode!.nodeData, input);
+    expect(output.inputData.first.connectedInterface!.nodeData, input);
   });
 }

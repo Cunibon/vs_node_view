@@ -73,8 +73,8 @@ class VSNodeManager {
     _nodes = Map.from(_nodes);
     for (final node in _nodes.values) {
       for (final input in node.inputData) {
-        if (nodeDatas.contains(input.connectedNode?.nodeData)) {
-          input.connectedNode = null;
+        if (nodeDatas.contains(input.connectedInterface?.nodeData)) {
+          input.connectedInterface = null;
         }
       }
     }

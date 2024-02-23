@@ -10,12 +10,13 @@ class VSWidgetNode extends VSNodeData {
     String? id,
     required String type,
     required Offset widgetOffset,
-    required VSOutputData<dynamic> outputData,
+    required VSOutputData outputData,
     required this.setValue,
     required this.getValue,
     required this.child,
     String? title,
     String? toolTip,
+    Function(VSInputData interfaceData)? onUpdatedConnection,
   }) : super(
           id: id,
           type: type,
@@ -24,6 +25,7 @@ class VSWidgetNode extends VSNodeData {
           outputData: [outputData],
           title: title,
           toolTip: toolTip,
+          onUpdatedConnection: onUpdatedConnection,
         );
 
   @override

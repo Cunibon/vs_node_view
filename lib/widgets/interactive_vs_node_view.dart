@@ -1,6 +1,5 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:vs_node_view/data/vs_node_data.dart';
 import 'package:vs_node_view/data/vs_node_data_provider.dart';
 import 'package:vs_node_view/widgets/vs_node_view.dart';
 
@@ -20,13 +19,8 @@ class InteractiveVSNodeView extends StatefulWidget {
     this.minScale = 0.01,
     this.scaleEnabled = true,
     this.panEnabled = true,
-    this.contextMenuBuilder,
-    this.nodeBuilder,
-    this.nodeTitleBuilder,
-    this.enableSelectionArea = true,
-    this.selectionAreaBuilder,
-    this.gestureDetectorBuilder,
     required this.nodeDataProvider,
+    this.baseNodeView,
   });
 
   ///TransformationController used by the [InteractiveViewer] widget
@@ -60,48 +54,8 @@ class InteractiveVSNodeView extends StatefulWidget {
   /// If false, the user will be prevented from scaling.
   final bool scaleEnabled;
 
-  ///Can be used to take control over the building of the nodes
-  ///
-  ///See [VSNode] for reference
-  final Widget Function(
-    BuildContext context,
-    VSNodeData data,
-  )? nodeBuilder;
-
-  ///Can be used to take control over the building of the context menu
-  ///
-  ///See [VSContextMenu] for reference
-  final Widget Function(
-    BuildContext context,
-    Map<String, dynamic> nodeBuildersMap,
-  )? contextMenuBuilder;
-
-  ///Can be used to take control over the building of the nodes titles
-  ///
-  ///See [VSNodeTitle] for reference
-  final Widget Function(
-    BuildContext context,
-    VSNodeData nodeData,
-  )? nodeTitleBuilder;
-
-  ///If [VSSelectionArea] or [selectionAreaBuilder] will be inserted to the widget tree
-  final bool enableSelectionArea;
-
-  ///Can be used to take control over the building of the selection area
-  ///
-  ///See [VSSelectionArea] for reference
-  final Widget Function(
-    BuildContext context,
-    Widget view,
-  )? selectionAreaBuilder;
-
-  ///Can be used to override the GestureDetector
-  ///
-  ///See [VSNodeDataProvider.closeContextMenu], [VSNodeDataProvider.openContextMenu] and [VSNodeDataProvider.selectedNodes]
-  final GestureDetector Function(
-    BuildContext context,
-    VSNodeDataProvider nodeDataProvider,
-  )? gestureDetectorBuilder;
+  ///The [VSNodeView] that will be wrapped by the [InteractiveViewer]
+  final VSNodeView? baseNodeView;
 
   @override
   State<InteractiveVSNodeView> createState() => _InteractiveVSNodeViewState();
@@ -149,15 +103,10 @@ class _InteractiveVSNodeViewState extends State<InteractiveVSNodeView> {
       child: SizedBox(
         width: width,
         height: height,
-        child: VSNodeView(
-          nodeDataProvider: widget.nodeDataProvider,
-          contextMenuBuilder: widget.contextMenuBuilder,
-          nodeBuilder: widget.nodeBuilder,
-          nodeTitleBuilder: widget.nodeTitleBuilder,
-          enableSelectionArea: widget.enableSelectionArea,
-          selectionAreaBuilder: widget.selectionAreaBuilder,
-          gestureDetectorBuilder: widget.gestureDetectorBuilder,
-        ),
+        child: widget.baseNodeView ??
+            VSNodeView(
+              nodeDataProvider: widget.nodeDataProvider,
+            ),
       ),
     );
   }

@@ -20,6 +20,7 @@ export 'data/vs_node_data_provider.dart' show VSNodeDataProvider;
 export 'data/vs_node_manager.dart' show VSNodeManager;
 export 'data/vs_subgroup.dart' show VSSubgroup;
 //SpecialNodes
+export 'special_nodes/vs_list_node.dart' show VSListNode;
 export 'special_nodes/vs_output_node.dart' show VSOutputNode;
 export 'special_nodes/vs_widget_node.dart' show VSWidgetNode;
 //Widgets

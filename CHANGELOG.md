@@ -1,3 +1,16 @@
+## 1.2.0
+
+* Breaking:
+* Updated to new Flutter version 3.19.1
+* Renamed VSInputDatas connectedNode to connectedInterface to be more accurat
+* Made InteractiveVSNodeView take VSNodeView as an optional parameter to reduce duplicate code
+
+* Features:
+* Added getInterfaceIcon function to Interfaces
+* Added option to use your own interfaceIcon widget
+* Added onUpdatedConnection function to nodes
+* Added new Special Node VSListNode
+
 ## 1.1.0
 
 * Breaking:

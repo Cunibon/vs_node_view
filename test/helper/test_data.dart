@@ -8,11 +8,13 @@ import 'package:vs_node_view/data/standard_interfaces/vs_string_interface.dart';
 import 'package:vs_node_view/data/vs_interface.dart';
 import 'package:vs_node_view/data/vs_node_data.dart';
 import 'package:vs_node_view/data/vs_subgroup.dart';
+import 'package:vs_node_view/special_nodes/vs_list_node.dart';
 import 'package:vs_node_view/special_nodes/vs_output_node.dart';
 import 'package:vs_node_view/special_nodes/vs_widget_node.dart';
 
 final List<dynamic> nodeBuilders = [
   textInputNode,
+  concatNode,
   VSSubgroup(
     name: "Number",
     subgroup: [
@@ -55,6 +57,35 @@ VSWidgetNode textInputNode(
     child: Expanded(child: input),
     setValue: (value) => controller!.text = value,
     getValue: () => controller!.text,
+  );
+}
+
+VSListNode concatNode(
+  Offset offset,
+  VSOutputData? ref,
+) {
+  return VSListNode(
+    type: "Concat",
+    toolTip: "Concatinates all inputs",
+    widgetOffset: offset,
+    outputData: VSStringOutputData(
+      type: "Output",
+      toolTip: "All inputs concatinated",
+      outputFunction: (data) => data.values.join(),
+    ),
+    inputBuilder: (index, ref) => VSDynamicInputData(
+      type: "$index",
+      title: "$index input",
+      initialConnection: ref,
+    ),
+  );
+}
+
+VSOutputNode outputNode(Offset offset, VSOutputData? ref) {
+  return VSOutputNode(
+    type: "Output",
+    widgetOffset: offset,
+    ref: ref,
   );
 }
 
@@ -176,13 +207,5 @@ VSNodeData ifNode(Offset offset, VSOutputData? ref) {
         },
       ),
     ],
-  );
-}
-
-VSOutputNode outputNode(Offset offset, VSOutputData? ref) {
-  return VSOutputNode(
-    type: "Output",
-    widgetOffset: offset,
-    ref: ref,
   );
 }

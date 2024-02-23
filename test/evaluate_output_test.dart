@@ -24,8 +24,8 @@ void main() {
 
   final sum = sumNode(Offset.zero, null);
 
-  sum.inputData.first.connectedNode = parseInt1.outputData.first;
-  sum.inputData.last.connectedNode = parseInt2.outputData.first;
+  sum.inputData.first.connectedInterface = parseInt1.outputData.first;
+  sum.inputData.last.connectedInterface = parseInt2.outputData.first;
 
   final input3 = textInputNode(
     Offset.zero,
@@ -36,15 +36,15 @@ void main() {
 
   final bigger = biggerNode(Offset.zero, null);
 
-  bigger.inputData.first.connectedNode = sum.outputData.first;
-  bigger.inputData.last.connectedNode = parseInt3.outputData.first;
+  bigger.inputData.first.connectedInterface = sum.outputData.first;
+  bigger.inputData.last.connectedInterface = parseInt3.outputData.first;
 
   final ifN = ifNode(Offset.zero, null);
   final ifInputs = ifN.inputData.toList();
 
-  ifInputs[0].connectedNode = bigger.outputData.first;
-  ifInputs[1].connectedNode = sum.outputData.first;
-  ifInputs[2].connectedNode = parseInt3.outputData.first;
+  ifInputs[0].connectedInterface = bigger.outputData.first;
+  ifInputs[1].connectedInterface = sum.outputData.first;
+  ifInputs[2].connectedInterface = parseInt3.outputData.first;
 
   final output = outputNode(Offset.zero, ifN.outputData.first);
 

@@ -1,19 +1,8 @@
-import 'dart:math';
-
 import 'package:flutter/gestures.dart';
+import 'package:vs_node_view/common.dart';
 import 'package:vs_node_view/data/offset_extension.dart';
 import 'package:vs_node_view/data/vs_interface.dart';
 import 'package:vs_node_view/data/vs_node_manager.dart';
-
-const _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
-Random _rnd = Random();
-
-String _getRandomString(int length) => String.fromCharCodes(
-      Iterable.generate(
-        length,
-        (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length)),
-      ),
-    );
 
 class VSNodeData {
   ///Holds all relevant node data
@@ -23,9 +12,10 @@ class VSNodeData {
     required this.widgetOffset,
     required this.inputData,
     required this.outputData,
+    this.onUpdatedConnection,
     this.toolTip,
     String? title,
-  })  : _id = id ?? _getRandomString(10),
+  })  : _id = id ?? getRandomString(10),
         _title = title ?? "" {
     for (var value in inputData) {
       value.nodeData = this;
@@ -65,6 +55,11 @@ class VSNodeData {
   ///A tooltip displayed on the widget
   final String? toolTip;
 
+  ///This function gets called when any input interface updates its connected node
+  ///
+  ///The interface in question is passed to the function call
+  Function(VSInputData interfaceData)? onUpdatedConnection;
+
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -100,7 +95,7 @@ class VSNodeData {
     };
 
     for (final ref in inputRefs.entries) {
-      inputMap[ref.key]?.connectedNode = ref.value;
+      inputMap[ref.key]?.connectedInterface = ref.value;
     }
   }
 }
