@@ -10,8 +10,8 @@ class VSListNode extends VSNodeData {
     String? id,
     required String type,
     required Offset widgetOffset,
-    required VSOutputData outputData,
     required this.inputBuilder,
+    required Iterable<VSOutputData> outputData,
     String? title,
     String? toolTip,
     Function(VSInputData interfaceData)? onUpdatedConnection,
@@ -20,7 +20,7 @@ class VSListNode extends VSNodeData {
           type: type,
           widgetOffset: widgetOffset,
           inputData: [inputBuilder(0, null)],
-          outputData: [outputData],
+          outputData: outputData,
           title: title,
           toolTip: toolTip,
           onUpdatedConnection: onUpdatedConnection,
@@ -36,6 +36,7 @@ class VSListNode extends VSNodeData {
   @override
   Function(VSInputData interfaceData)? get onUpdatedConnection => _updateInputs;
 
+  ///The inputs of this [VSListNode] without [VSInputData] that have no connectedInterface
   List<VSInputData> getCleanInputs() {
     return inputData
         .where(

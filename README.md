@@ -9,6 +9,12 @@ Check out the Demo: https://firebon.de:8081/VSDemo/
     alt="An example of a node tree created with the package"/>
 </p>
 
+In case you want to use this package in Web make sure to add 
+```html
+<html oncontextmenu="event.preventDefault();"></html>
+```
+At the top of the index.html file
+
 ## Features
 
 Use this plugin in your Flutter app to:
@@ -47,6 +53,8 @@ There are 6 base interfaces which each have an Input and Output varient:
 
 All interfaces have a "type", type will be used for deserialization and should not be changed if it already reached production, as deserialization will fail.
 Use "title" to add localization independent of serialization. 
+Use "toolTip" to add a tool tip when hovering over an interface with the cursor.
+Use "interfaceIconBuilder" to customise the interface Widget per interface instance, instead of for all interfaces of this type.
 
 Lets look at how you can define your own interface if you want to use your own class for visual scripting
 
@@ -63,6 +71,7 @@ class MyFirstInputData extends VSInputData {
     super.title,
     super.toolTip,
     super.initialConnection,
+    super.interfaceIconBuilder,
   });
 
   ///A list of Types this input will accept
@@ -73,8 +82,16 @@ class MyFirstInputData extends VSInputData {
         MyFirstOutputData,
       ];
 
+  ///Defines the color this interface will have in the UI fo the Icon and Lines between nodes
   @override
   Color get interfaceColor => _interfaceColor;
+
+  ///You can take control over the interface Widget for a specific Interface type by overriding this function
+  ///This is for all interafaces of this type, use interfaceIconBuilder to customise the Widget per instance of the interface
+  @override
+  Widget getInterfaceIcon({required BuildContext context, required GlobalKey anchor,}) {
+    return MyWidget();
+  }
 }
 
 ///This is your output Interface
@@ -87,10 +104,17 @@ class MyFirstOutputData extends VSOutputData<MyCoolClass> {
     super.title,
     super.toolTip,
     super.outputFunction,
+    super.interfaceIconBuilder,
   });
 
   @override
   Color get interfaceColor => _interfaceColor;
+
+  ///This can be done for booth types of interfaces
+  @override
+  Widget getInterfaceIcon({required BuildContext context, required GlobalKey anchor,}) {
+    return MyWidget();
+  }
 }
 ```
 
@@ -110,6 +134,7 @@ The input data will be given to all outputs via a Map<String, dynamic>. The key 
 
 * [Normal nodes](#simple-nodes)
 * [Widget nodes](#widget-nodes)
+* [List nodes](#list-nodes)
 * [Output nodes](#output-nodes)
 
 #### Normal nodes
@@ -176,6 +201,41 @@ VSWidgetNode textInputNode(
     child: Expanded(child: inputWidget),
     setValue: (value) => controller.text = value,
     getValue: () => controller.text,
+  );
+}
+```
+
+#### List nodes
+
+List nodes are all nodes that use VSListNode.
+They need an inputBuilder to create new interfaces in runtime.
+The builder gets the index of the newly build interface as well as the connetion this interface will have.
+Make sure to pass connection to the initialConnection of the interface in the builder, or it wont work correctly. 
+
+You define one like this:
+
+```dart
+VSListNode sumNode(
+  Offset offset,
+  VSOutputData? ref,
+) {
+  return VSListNode(
+    type: "Sum",
+    toolTip: "Adds all supplied Numbers together",
+    widgetOffset: offset,
+    inputBuilder: (index, connection) => VSNumInputData(
+      type: "Input $index",
+      initialConnection: connection,
+    ),
+    outputData: [
+      VSNumOutputData(
+        type: "output",
+        toolTip: "The sum of all supplied values",
+        outputFunction: (data) {
+          return data.values.reduce((value, element) => value + element);
+        },
+      )
+    ],
   );
 }
 ```
@@ -319,12 +379,16 @@ If width or height are not given the screen width or height will be used instead
 The VSNodeDataProvider has a function "applyViewPortTransfrom" which will apply all viewport transformations (zoom, pan) to a given Offset.
 This is neccesarry as Offsets ist mostly given in screen coordinates and thus dont work anymore once the viewport has been altered.
 
+You can pass your own VSNodeView widget to change its settings specifically
 
 ```dart
 InteractiveVSNodeView(
     width: 5000,
     height: 5000,
     nodeDataProvider: nodeDataProvider,
+    baseNodeView: VSNodeView(
+      nodeDataProvider: nodeDataProvider,
+    ),
 ),
 ```
 

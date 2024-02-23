@@ -58,7 +58,7 @@ class VSNodeData {
   ///This function gets called when any input interface updates its connected node
   ///
   ///The interface in question is passed to the function call
-  Function(VSInputData interfaceData)? onUpdatedConnection;
+  final Function(VSInputData interfaceData)? onUpdatedConnection;
 
   Map<String, dynamic> toJson() {
     return {

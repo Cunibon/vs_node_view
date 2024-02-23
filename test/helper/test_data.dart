@@ -68,11 +68,13 @@ VSListNode concatNode(
     type: "Concat",
     toolTip: "Concatinates all inputs",
     widgetOffset: offset,
-    outputData: VSStringOutputData(
-      type: "Output",
-      toolTip: "All inputs concatinated",
-      outputFunction: (data) => data.values.join(),
-    ),
+    outputData: [
+      VSStringOutputData(
+        type: "Output",
+        toolTip: "All inputs concatinated",
+        outputFunction: (data) => data.values.join(),
+      )
+    ],
     inputBuilder: (index, ref) => VSDynamicInputData(
       type: "$index",
       title: "$index input",
