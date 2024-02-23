@@ -5,7 +5,7 @@ import 'package:vs_node_view/vs_node_view.dart';
 
 import 'test_data.dart';
 
-Future<VSNodeDataProvider> pumpVSNodeView(
+Future<VSNodeDataProvider> pumpInteractiveVSNodeView(
   WidgetTester tester,
 ) async {
   final nodeDataProvider = VSNodeDataProvider(
@@ -17,6 +17,24 @@ Future<VSNodeDataProvider> pumpVSNodeView(
       home: InteractiveVSNodeView(
         nodeDataProvider: nodeDataProvider,
         width: 1000,
+      ),
+    ),
+  );
+
+  return nodeDataProvider;
+}
+
+Future<VSNodeDataProvider> pumpVSNodeView(
+  WidgetTester tester,
+) async {
+  final nodeDataProvider = VSNodeDataProvider(
+    nodeBuilders: nodeBuilders,
+  );
+
+  await tester.pumpWidget(
+    MaterialApp(
+      home: VSNodeView(
+        nodeDataProvider: nodeDataProvider,
       ),
     ),
   );

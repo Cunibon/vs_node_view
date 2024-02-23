@@ -7,12 +7,8 @@ import 'helper/helper_functions.dart';
 import 'helper/test_data.dart';
 
 void main() {
-  final nodeDataProvider = VSNodeDataProvider(
-    nodeBuilders: nodeBuilders,
-  );
-
-  Future<void> setupSelectionAreaTest(WidgetTester tester) async {
-    await pumpVSNodeView(
+  Future<VSNodeDataProvider> setupSelectionAreaTest(WidgetTester tester) async {
+    final nodeDataProvider = await pumpVSNodeView(
       tester,
     );
 
@@ -30,13 +26,15 @@ void main() {
       input,
       output,
     ]);
+
+    return nodeDataProvider;
   }
 
   testWidgets('Select nodes', (tester) async {
-    await setupSelectionAreaTest(tester);
+    final nodeDataProvider = await setupSelectionAreaTest(tester);
     await tester.pumpAndSettle();
 
-    await simulateKeyDownEvent(LogicalKeyboardKey.control);
+    await simulateKeyDownEvent(LogicalKeyboardKey.alt);
     await tester.pumpAndSettle();
 
     await panFromTo(
@@ -50,7 +48,7 @@ void main() {
   });
 
   testWidgets('Unselect nodes', (tester) async {
-    await setupSelectionAreaTest(tester);
+    final nodeDataProvider = await setupSelectionAreaTest(tester);
     nodeDataProvider.selectedNodes.addAll(
       nodeDataProvider.nodes.keys,
     );
@@ -58,7 +56,7 @@ void main() {
 
     expect(nodeDataProvider.selectedNodes.length, 2);
 
-    await simulateKeyDownEvent(LogicalKeyboardKey.control);
+    await simulateKeyDownEvent(LogicalKeyboardKey.alt);
     await tester.pumpAndSettle();
 
     await panFromTo(
@@ -72,7 +70,7 @@ void main() {
   });
 
   testWidgets('Move nodes', (tester) async {
-    await setupSelectionAreaTest(tester);
+    final nodeDataProvider = await setupSelectionAreaTest(tester);
     nodeDataProvider.selectedNodes.addAll(
       nodeDataProvider.nodes.keys,
     );

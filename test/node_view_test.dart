@@ -9,7 +9,7 @@ import 'helper/test_data.dart';
 
 void main() {
   testWidgets('Create new node', (tester) async {
-    await pumpVSNodeView(
+    await pumpInteractiveVSNodeView(
       tester,
     );
 
@@ -28,7 +28,7 @@ void main() {
   });
 
   testWidgets('Create new node from subgroup', (tester) async {
-    await pumpVSNodeView(
+    await pumpInteractiveVSNodeView(
       tester,
     );
 
@@ -51,7 +51,7 @@ void main() {
   });
 
   testWidgets('Create new node with reference', (tester) async {
-    final nodeDataProvider = await pumpVSNodeView(
+    final nodeDataProvider = await pumpInteractiveVSNodeView(
       tester,
     );
 
@@ -89,7 +89,7 @@ void main() {
   });
 
   testWidgets('Move node', (tester) async {
-    final nodeDataProvider = await pumpVSNodeView(
+    final nodeDataProvider = await pumpInteractiveVSNodeView(
       tester,
     );
 
@@ -114,7 +114,7 @@ void main() {
   });
 
   testWidgets('Connect node', (tester) async {
-    final nodeDataProvider = await pumpVSNodeView(
+    final nodeDataProvider = await pumpInteractiveVSNodeView(
       tester,
     );
 
