@@ -12,6 +12,7 @@ class VSNumInputData extends VSInputData {
     super.title,
     super.toolTip,
     super.initialConnection,
+    super.interfaceIconBuilder,
   });
 
   @override
@@ -32,6 +33,7 @@ class VSNumOutputData extends VSOutputData<num> {
     super.title,
     super.toolTip,
     super.outputFunction,
+    super.interfaceIconBuilder,
   });
 
   @override

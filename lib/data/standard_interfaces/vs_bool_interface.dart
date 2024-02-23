@@ -10,6 +10,7 @@ class VSBoolInputData extends VSInputData {
     super.title,
     super.toolTip,
     super.initialConnection,
+    super.interfaceIconBuilder,
   });
 
   @override
@@ -26,6 +27,7 @@ class VSBoolOutputData extends VSOutputData<bool> {
     super.title,
     super.toolTip,
     super.outputFunction,
+    super.interfaceIconBuilder,
   });
 
   @override

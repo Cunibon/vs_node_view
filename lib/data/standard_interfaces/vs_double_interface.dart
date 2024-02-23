@@ -11,6 +11,7 @@ class VSDoubleInputData extends VSInputData {
     super.title,
     super.toolTip,
     super.initialConnection,
+    super.interfaceIconBuilder,
   });
 
   @override
@@ -27,6 +28,7 @@ class VSDoubleOutputData extends VSOutputData<double> {
     super.title,
     super.toolTip,
     super.outputFunction,
+    super.interfaceIconBuilder,
   });
 
   @override

@@ -10,6 +10,7 @@ class VSStringInputData extends VSInputData {
     super.title,
     super.toolTip,
     super.initialConnection,
+    super.interfaceIconBuilder,
   });
 
   @override
@@ -26,6 +27,7 @@ class VSStringOutputData extends VSOutputData<String> {
     super.title,
     super.toolTip,
     super.outputFunction,
+    super.interfaceIconBuilder,
   });
 
   @override

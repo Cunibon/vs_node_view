@@ -11,6 +11,7 @@ class VSIntInputData extends VSInputData {
     super.title,
     super.toolTip,
     super.initialConnection,
+    super.interfaceIconBuilder,
   });
 
   @override
@@ -27,6 +28,7 @@ class VSIntOutputData extends VSOutputData<int> {
     super.title,
     super.toolTip,
     super.outputFunction,
+    super.interfaceIconBuilder,
   });
 
   @override
