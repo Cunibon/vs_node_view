@@ -16,9 +16,12 @@ class VSNodeSerializationManager {
   ///Handles serialization and deserialization
   VSNodeSerializationManager({
     required List<dynamic> nodeBuilders,
+    this.onBuilderMissing,
   }) {
     _findNodes(nodeBuilders, contextNodeBuilders);
   }
+
+  final Function(Map nodeJSON)? onBuilderMissing;
 
   void _findNodes(
     List<dynamic> builders,
@@ -78,25 +81,32 @@ class VSNodeSerializationManager {
   Map<String, VSNodeData> deserializeNodes(String dataString) {
     final data = jsonDecode(dataString) as Map<String, dynamic>;
 
-    final Map<String, VSNodeData> decoded = data.map(
-      (key, value) {
-        final node = _nodeBuilders[value["type"]]!(Offset.zero, null)
-          ..setBaseData(
-            value["id"],
-            value["title"],
-            offsetFromJson(value["widgetOffset"]),
-          );
+    final Map<String, VSNodeData> decoded = {};
 
-        if (value["value"] != null) {
-          (node as VSWidgetNode).setValue(value["value"]);
-        }
+    data.forEach((key, value) {
+      final node = _nodeBuilders[value["type"]]?.call(Offset.zero, null);
 
-        return MapEntry(
-          key,
-          node,
+      if (node == null) {
+        //ignore: avoid_print
+        print(
+          "A node was serialized but the builder for its type is missing.\nIt will be remove from the current node tree.\n$value",
         );
-      },
-    );
+        onBuilderMissing?.call(value);
+        return;
+      }
+
+      node.setBaseData(
+        value["id"],
+        value["title"],
+        offsetFromJson(value["widgetOffset"]),
+      );
+
+      if (value["value"] != null) {
+        (node as VSWidgetNode).setValue(value["value"]);
+      }
+
+      decoded[key] = node;
+    });
 
     data.forEach((key, value) {
       final inputData = value["inputData"] as List<dynamic>;
@@ -114,7 +124,7 @@ class VSNodeSerializationManager {
         }
       }
 
-      decoded[key]!.setRefData(inputRefs);
+      decoded[key]?.setRefData(inputRefs);
     });
 
     return decoded;

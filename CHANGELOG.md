@@ -8,6 +8,8 @@
 
 **Change**:
 * Added onLongPressStart to the default gestures that open the context menu
+* Made missing NodeBuilder in deserialization fail nicely
+* Added onBuilderMissing call to handle missing NodeBuilder
 
 ## 1.2.0
 

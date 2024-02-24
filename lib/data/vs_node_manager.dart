@@ -11,9 +11,11 @@ class VSNodeManager {
   VSNodeManager({
     required List<dynamic> nodeBuilders,
     String? serializedNodes,
+    Function(Map nodeJSON)? onBuilderMissing,
   }) {
     serializationManager = VSNodeSerializationManager(
       nodeBuilders: nodeBuilders,
+      onBuilderMissing: onBuilderMissing,
     );
 
     if (serializedNodes != null) {

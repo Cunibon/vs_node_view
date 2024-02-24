@@ -22,10 +22,12 @@ class VSNodeDataProvider extends ChangeNotifier {
   VSNodeDataProvider({
     required List<dynamic> nodeBuilders,
     String? serializedNodes,
+    Function(Map nodeJSON)? onBuilderMissing,
   }) {
     nodeManger = VSNodeManager(
       nodeBuilders: nodeBuilders,
       serializedNodes: serializedNodes,
+      onBuilderMissing: onBuilderMissing,
     );
   }
 
