@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:vs_node_view/data/vs_interface.dart';
 import 'package:vs_node_view/data/vs_node_data.dart';
 import 'package:vs_node_view/data/vs_node_data_provider.dart';
+import 'package:vs_node_view/widgets/line_drawer/multi_gradiant_line_drawer.dart';
 import 'package:vs_node_view/widgets/vs_context_menu.dart';
 import 'package:vs_node_view/widgets/vs_node.dart';
 import 'package:vs_node_view/widgets/vs_node_title.dart';
@@ -94,34 +96,44 @@ class VSNodeView extends StatelessWidget {
             );
           });
 
-          final view = Stack(
-            children: [
-              gestureDetectorBuilder?.call(context, nodeDataProvider) ??
-                  GestureDetector(
-                    onTapDown: (details) {
-                      nodeDataProvider.closeContextMenu();
-                      nodeDataProvider.selectedNodes = {};
-                    },
-                    onSecondaryTapUp: (details) {
-                      nodeDataProvider.openContextMenu(
+          final view = CustomPaint(
+            foregroundPainter: MultiGradientLinePainter(
+              data: nodeDataProvider.nodes.values
+                  .expand<VSInputData>((element) => element.inputData)
+                  .toList(),
+            ),
+            child: Stack(
+              children: [
+                gestureDetectorBuilder?.call(context, nodeDataProvider) ??
+                    GestureDetector(
+                      onTapDown: (details) {
+                        nodeDataProvider.closeContextMenu();
+                        nodeDataProvider.selectedNodes = {};
+                      },
+                      onSecondaryTapUp: (details) =>
+                          nodeDataProvider.openContextMenu(
                         position: details.globalPosition,
-                      );
-                    },
-                  ),
-              ...nodes,
-              if (nodeDataProvider.contextMenuContext != null)
-                Positioned(
-                  left: nodeDataProvider.contextMenuContext!.offset.dx,
-                  top: nodeDataProvider.contextMenuContext!.offset.dy,
-                  child: contextMenuBuilder?.call(
-                        context,
-                        nodeDataProvider.nodeBuildersMap,
-                      ) ??
-                      VSContextMenu(
-                        nodeBuilders: nodeDataProvider.nodeBuildersMap,
                       ),
-                ),
-            ],
+                      onLongPressStart: (details) =>
+                          nodeDataProvider.openContextMenu(
+                        position: details.globalPosition,
+                      ),
+                    ),
+                ...nodes,
+                if (nodeDataProvider.contextMenuContext != null)
+                  Positioned(
+                    left: nodeDataProvider.contextMenuContext!.offset.dx,
+                    top: nodeDataProvider.contextMenuContext!.offset.dy,
+                    child: contextMenuBuilder?.call(
+                          context,
+                          nodeDataProvider.nodeBuildersMap,
+                        ) ??
+                        VSContextMenu(
+                          nodeBuilders: nodeDataProvider.nodeBuildersMap,
+                        ),
+                  ),
+              ],
+            ),
           );
 
           if (enableSelectionArea) {

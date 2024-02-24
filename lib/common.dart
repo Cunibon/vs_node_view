@@ -26,17 +26,23 @@ RenderBox findAndUpdateWidgetPosition({
 }) {
   final renderBox =
       widgetAnchor.currentContext?.findRenderObject() as RenderBox;
-  Offset position = renderBox.localToGlobal(Offset.zero);
+  Offset position = renderBox.localToGlobal(getWidgetCenter(renderBox));
 
   final provider = context.read<VSNodeDataProvider>();
 
-  data.widgetOffset =
+  final newOffset =
       provider.applyViewPortTransfrom(position) - data.nodeData!.widgetOffset;
 
-  provider.updateOrCreateNodes([data.nodeData!]);
+  if (newOffset != data.widgetOffset) {
+    data.widgetOffset = newOffset;
+    provider.updateOrCreateNodes([data.nodeData!]);
+  }
 
   return renderBox;
 }
+
+Offset getWidgetCenter(RenderBox? renderBox) =>
+    renderBox != null ? (renderBox.size.toOffset() / 2) : Offset.zero;
 
 Widget wrapWithToolTip({
   String? toolTip,
@@ -50,6 +56,3 @@ Widget wrapWithToolTip({
           child: child,
         );
 }
-
-Offset getWidgetCenter(RenderBox? renderBox) =>
-    renderBox != null ? (renderBox.size.toOffset() / 2) : Offset.zero;

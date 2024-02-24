@@ -170,7 +170,12 @@ class VSNodeDataProvider extends ChangeNotifier {
   ///
   ///Usefull if you want to wrap [VSNodeView] in an [InteractiveViewer] or the sorts,
   ///to assure context menu and node interactions work as planned
-  double viewportScale = 1;
+  double get viewportScale => _viewportScale;
+  double _viewportScale = 1;
+  set viewportScale(value) {
+    _viewportScale = value;
+    notifyListeners();
+  }
 
   ///Helper function to apply [viewportOffset] and [viewportScale] to a Offset
   Offset applyViewPortTransfrom(Offset inital) =>

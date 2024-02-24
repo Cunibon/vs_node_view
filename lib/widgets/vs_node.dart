@@ -36,6 +36,8 @@ class VSNode extends StatefulWidget {
 }
 
 class _VSNodeState extends State<VSNode> {
+  final GlobalKey _anchor = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     final List<Widget> interfaceWidgets = [];
@@ -59,24 +61,32 @@ class _VSNodeState extends State<VSNode> {
     final nodeProvider = context.read<VSNodeDataProvider>();
 
     return Draggable(
-      onDragEnd: (details) {
+      onDragEnd: (_) {
+        final renderBox =
+            _anchor.currentContext?.findRenderObject() as RenderBox;
+        Offset position = renderBox.localToGlobal(Offset.zero);
+
         nodeProvider.moveNode(
           widget.data,
-          details.offset,
+          position,
         );
       },
-      feedback: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              Text(
-                widget.data.title,
-              ),
-              SizedBox(
-                width: widget.width,
-              )
-            ],
+      feedback: Transform.scale(
+        scale: 1 / nodeProvider.viewportScale,
+        child: Card(
+          key: _anchor,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                Text(
+                  widget.data.title,
+                ),
+                SizedBox(
+                  width: widget.width,
+                )
+              ],
+            ),
           ),
         ),
       ),
