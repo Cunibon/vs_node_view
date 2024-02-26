@@ -1,3 +1,11 @@
+## 1.2.2
+
+**Fix**:
+* Fixed read me
+
+**Change**:
+* Added option to pass a VSNodeManager to the VSNodeDataProvider instead of it creating one
+
 ## 1.2.1
 
 **Fix**:

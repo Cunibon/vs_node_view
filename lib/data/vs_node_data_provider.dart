@@ -21,14 +21,18 @@ class VSNodeDataProvider extends ChangeNotifier {
   ///Wraps VSNodeManager to allow UI interaction and updates
   VSNodeDataProvider({
     required List<dynamic> nodeBuilders,
+
+    ///If a nodeManager is passed [serializedNodes] and [onBuilderMissing] will be ignored
+    VSNodeManager? nodeManager,
     String? serializedNodes,
     Function(Map nodeJSON)? onBuilderMissing,
   }) {
-    nodeManger = VSNodeManager(
-      nodeBuilders: nodeBuilders,
-      serializedNodes: serializedNodes,
-      onBuilderMissing: onBuilderMissing,
-    );
+    nodeManger = nodeManager ??
+        VSNodeManager(
+          nodeBuilders: nodeBuilders,
+          serializedNodes: serializedNodes,
+          onBuilderMissing: onBuilderMissing,
+        );
   }
 
   ///Instance of [VSNodeManager] created on initialization

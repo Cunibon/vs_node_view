@@ -195,7 +195,7 @@ VSWidgetNode textInputNode(
     type: "Input",
     widgetOffset: offset,
     outputData: VSStringOutputData(
-      name: "Output",
+      type: "Output",
       outputFunction: (data) => controller.text,
     ),
     child: Expanded(child: inputWidget),

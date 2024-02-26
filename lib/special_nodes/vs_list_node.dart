@@ -15,16 +15,25 @@ class VSListNode extends VSNodeData {
     String? title,
     String? toolTip,
     Function(VSInputData interfaceData)? onUpdatedConnection,
+
+    ///Can be used to set the initial connection of the first created input
+    VSOutputData? referenceConnection,
   }) : super(
           id: id,
           type: type,
           widgetOffset: widgetOffset,
-          inputData: [inputBuilder(0, null)],
+          inputData: [
+            inputBuilder(0, null)..connectedInterface = referenceConnection,
+          ],
           outputData: outputData,
           title: title,
           toolTip: toolTip,
           onUpdatedConnection: onUpdatedConnection,
-        );
+        ) {
+    if (inputData.first.connectedInterface != null) {
+      _setInputs([inputData.first.connectedInterface]);
+    }
+  }
 
   ///Used to build the nodes inputs dynamically
   ///
