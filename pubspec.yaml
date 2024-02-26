@@ -1,6 +1,6 @@
 name: vs_node_view
 description: "A Visual Scripting toolkit to create and use your own VS widgets."
-version: 1.2.1
+version: 1.2.2
 repository: https://github.com/Cunibon/vs_node_view
 
 environment:
