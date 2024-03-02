@@ -1,3 +1,4 @@
+import 'package:vs_node_view/common.dart';
 import 'package:vs_node_view/data/vs_node_data.dart';
 import 'package:vs_node_view/data/vs_node_serialization_manager.dart';
 import 'package:vs_node_view/special_nodes/vs_output_node.dart';
@@ -12,10 +13,16 @@ class VSNodeManager {
     required List<dynamic> nodeBuilders,
     String? serializedNodes,
     Function(Map nodeJSON)? onBuilderMissing,
+
+    ///These nodes will not be part of [contextNodeBuilders]
+    ///
+    ///They will only be used for deserialization
+    List<VSNodeDataBuilder>? additionalNodes,
   }) {
     serializationManager = VSNodeSerializationManager(
       nodeBuilders: nodeBuilders,
       onBuilderMissing: onBuilderMissing,
+      additionalNodes: additionalNodes,
     );
 
     if (serializedNodes != null) {

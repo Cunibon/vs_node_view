@@ -17,7 +17,18 @@ class VSNodeSerializationManager {
   VSNodeSerializationManager({
     required List<dynamic> nodeBuilders,
     this.onBuilderMissing,
+
+    ///These nodes will not be part of [contextNodeBuilders]
+    ///
+    ///They will only be used for deserialization
+    List<VSNodeDataBuilder>? additionalNodes,
   }) {
+    if (additionalNodes != null) {
+      for (final node in additionalNodes) {
+        _addNodeBuilder(node);
+      }
+    }
+
     _findNodes(nodeBuilders, contextNodeBuilders);
   }
 
@@ -39,30 +50,35 @@ class VSNodeSerializationManager {
           );
         }
       } else {
-        final instance = builder(Offset.zero, null) as VSNodeData;
-        if (!_nodeBuilders.containsKey(instance.type)) {
-          final inputNames = instance.inputData.map((e) => e.type);
-          if (inputNames.length != inputNames.toSet().length) {
-            throw FormatException(
-              "There are 2 or more Inputs in the node ${instance.type} with the same name. There can only be one",
-            );
-          }
-          final outputNames = instance.outputData.map((e) => e.type);
-          if (outputNames.length != outputNames.toSet().length) {
-            throw FormatException(
-              "There are 2 or more Outputs in the node ${instance.type} with the same name. There can only be one",
-            );
-          }
-          _nodeBuilders[instance.type] = builder;
-        } else {
-          throw FormatException(
-            "There are 2 or more nodes with the name ${instance.type}. There can only be one",
-          );
-        }
+        VSNodeData instance = _addNodeBuilder(builder);
 
         builderMap[instance.type] = builder;
       }
     }
+  }
+
+  VSNodeData _addNodeBuilder(VSNodeDataBuilder builder) {
+    final instance = builder(Offset.zero, null);
+    if (!_nodeBuilders.containsKey(instance.type)) {
+      final inputNames = instance.inputData.map((e) => e.type);
+      if (inputNames.length != inputNames.toSet().length) {
+        throw FormatException(
+          "There are 2 or more Inputs in the node ${instance.type} with the same name. There can only be one",
+        );
+      }
+      final outputNames = instance.outputData.map((e) => e.type);
+      if (outputNames.length != outputNames.toSet().length) {
+        throw FormatException(
+          "There are 2 or more Outputs in the node ${instance.type} with the same name. There can only be one",
+        );
+      }
+      _nodeBuilders[instance.type] = builder;
+    } else {
+      throw FormatException(
+        "There are 2 or more nodes with the name ${instance.type}. There can only be one",
+      );
+    }
+    return instance;
   }
 
   final Map<String, VSNodeDataBuilder> _nodeBuilders = {};

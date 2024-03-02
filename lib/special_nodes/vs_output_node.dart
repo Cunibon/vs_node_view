@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vs_node_view/data/evaluation_error.dart';
 import 'package:vs_node_view/data/standard_interfaces/vs_dynamic_interface.dart';
 import 'package:vs_node_view/data/vs_interface.dart';
 import 'package:vs_node_view/data/vs_node_data.dart';
@@ -70,9 +71,17 @@ class VSOutputNode extends VSNodeData {
           );
         }
 
-        inputValues[input.type] = connectedNode.outputFunction?.call(
-          nodeInputValues[connectedNode.nodeData!.id]!,
-        );
+        try {
+          inputValues[input.type] = connectedNode.outputFunction?.call(
+            nodeInputValues[connectedNode.nodeData!.id]!,
+          );
+        } catch (e) {
+          throw EvalutationError(
+            nodeData: connectedNode.nodeData!,
+            inputData: nodeInputValues[connectedNode.nodeData!.id]!,
+            error: e,
+          );
+        }
       } else {
         inputValues[input.type] = null;
       }

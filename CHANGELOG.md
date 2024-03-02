@@ -1,9 +1,15 @@
+## 1.2.3
+
+**Changes**:
+* Added additionalNodes to VSNodeDataProvider/VSNodeManager/VSNodeSerializationManager to allow adding nodes that will not be displayed in the context menu
+* Made errors in evalutations be more informational 
+
 ## 1.2.2
 
 **Fix**:
 * Fixed read me
 
-**Change**:
+**Changes**:
 * Added option to pass a VSNodeManager to the VSNodeDataProvider instead of it creating one
 
 ## 1.2.1
@@ -14,7 +20,7 @@
 * Fixed lines sometimes drawing behind Nodes
 * Fixed node drag feedback scaling issue
 
-**Change**:
+**Changes**:
 * Added onLongPressStart to the default gestures that open the context menu
 * Made missing NodeBuilder in deserialization fail nicely
 * Added onBuilderMissing call to handle missing NodeBuilder
@@ -50,7 +56,7 @@
 **Features**:
 * Added clearNodes and removeNodes functions
 
-**Change**:
+**Changes**:
 * Moved selection button to "Alt" as it intervered with inputs
 
 ## 1.0.1
