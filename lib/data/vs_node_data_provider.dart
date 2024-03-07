@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vs_node_view/common.dart';
+import 'package:vs_node_view/data/vs_history_manager.dart';
 import 'package:vs_node_view/data/vs_interface.dart';
 import 'package:vs_node_view/data/vs_node_data.dart';
 import 'package:vs_node_view/data/vs_node_manager.dart';
@@ -20,30 +21,28 @@ class ContextMenuContext {
 class VSNodeDataProvider extends ChangeNotifier {
   ///Wraps VSNodeManager to allow UI interaction and updates
   VSNodeDataProvider({
-    required List<dynamic> nodeBuilders,
+    required this.nodeManager,
 
-    ///If a nodeManager is passed [serializedNodes], [onBuilderMissing] and [additionalNodes] will be ignored
-    VSNodeManager? nodeManager,
-    String? serializedNodes,
-    Function(Map nodeJSON)? onBuilderMissing,
-
-    ///These nodes will not be part of [contextNodeBuilders]
-    ///
-    ///They will only be used for deserialization
-    List<VSNodeDataBuilder>? additionalNodes,
+    ///Set this to false if you dont want undo functionality
+    this.historyManager,
   }) {
-    nodeManger = nodeManager ??
-        VSNodeManager(
-          nodeBuilders: nodeBuilders,
-          serializedNodes: serializedNodes,
-          onBuilderMissing: onBuilderMissing,
-        );
+    if (historyManager != null) {
+      historyManager!.provider = this;
+      historyManager!.updateHistory();
+    }
   }
 
-  ///Instance of [VSNodeManager] created on initialization
+  ///Instance of [VSNodeManager] representing the current nodes
   ///
   ///Holds all the data and is used as an "API" to modify data
-  late VSNodeManager nodeManger;
+  final VSNodeManager nodeManager;
+
+  ///Instance of [VSHistoryManger]
+  ///
+  ///Holds and updates a history of the nodes
+  ///
+  ///Has undo and redo functions
+  final VSHistoryManger? historyManager;
 
   ///A map of all nodeBuilders can be used to build a context menu.
   ///
@@ -55,24 +54,28 @@ class VSNodeDataProvider extends ChangeNotifier {
   /// },
   /// nodeName: NodeBuilder
   ///}
-  Map<String, dynamic> get nodeBuildersMap => nodeManger.nodeBuildersMap;
+  Map<String, dynamic> get nodeBuildersMap => nodeManager.nodeBuildersMap;
 
   ///Node data map in this format: {NodeData.id: NodeData}
-  Map<String, VSNodeData> get nodes => nodeManger.nodes;
+  Map<String, VSNodeData> get nodes => nodeManager.nodes;
 
   ///Loades nodes from string and replaces current nodes
   ///
   ///Notifies listeners to this provider
   void loadSerializedNodes(String serializedNodes) {
-    nodeManger.loadSerializedNodes(serializedNodes);
+    nodeManager.loadSerializedNodes(serializedNodes);
     notifyListeners();
   }
 
   ///Updates existing nodes or creates them
   ///
   ///Notifies listeners to this provider
-  void updateOrCreateNodes(List<VSNodeData> nodeDatas) async {
-    nodeManger.updateOrCreateNodes(nodeDatas);
+  void updateOrCreateNodes(
+    List<VSNodeData> nodeDatas, {
+    bool updateHistory = true,
+  }) async {
+    nodeManager.updateOrCreateNodes(nodeDatas);
+    if (updateHistory) historyManager?.updateHistory();
     notifyListeners();
   }
 
@@ -104,7 +107,8 @@ class VSNodeDataProvider extends ChangeNotifier {
   ///
   ///Notifies listeners to this provider
   void removeNodes(List<VSNodeData> nodeDatas) async {
-    nodeManger.removeNodes(nodeDatas);
+    nodeManager.removeNodes(nodeDatas);
+    historyManager?.updateHistory();
     notifyListeners();
   }
 
@@ -112,7 +116,8 @@ class VSNodeDataProvider extends ChangeNotifier {
   ///
   ///Notifies listeners to this provider
   void clearNodes() async {
-    nodeManger.clearNodes();
+    nodeManager.clearNodes();
+    historyManager?.updateHistory();
     notifyListeners();
   }
 
@@ -156,7 +161,7 @@ class VSNodeDataProvider extends ChangeNotifier {
   ///Returns a set of all nodes that fall into the are between the supplied start and end
   Set<VSNodeData> findNodesInsideSelectionArea(Offset start, Offset end) {
     final Set<VSNodeData> inside = {};
-    for (final node in nodeManger.nodes.values) {
+    for (final node in nodeManager.nodes.values) {
       final pos = node.widgetOffset;
       if (pos.dy > start.dy &&
           pos.dx > start.dx &&

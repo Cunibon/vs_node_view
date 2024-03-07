@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:vs_node_view/data/vs_node_data.dart';
-import 'package:vs_node_view/data/vs_node_data_provider.dart';
+import 'package:vs_node_view/widgets/inherited_node_data_provider.dart';
 import 'package:vs_node_view/widgets/vs_node_input.dart';
 import 'package:vs_node_view/widgets/vs_node_output.dart';
 import 'package:vs_node_view/widgets/vs_node_title.dart';
@@ -58,7 +57,7 @@ class _VSNodeState extends State<VSNode> {
       );
     }
 
-    final nodeProvider = context.read<VSNodeDataProvider>();
+    final nodeProvider = InheritedNodeDataProvider.of(context).provider;
 
     return Draggable(
       onDragEnd: (_) {

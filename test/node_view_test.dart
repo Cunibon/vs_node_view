@@ -82,7 +82,7 @@ void main() {
     expect(find.byType(VSNode), findsNWidgets(2));
 
     expect(
-      nodeDataProvider.nodeManger.getOutputNodes.first.inputData.first
+      nodeDataProvider.nodeManager.getOutputNodes.first.inputData.first
           .connectedInterface!.nodeData,
       input,
     );

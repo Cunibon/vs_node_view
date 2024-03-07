@@ -159,7 +159,7 @@ class _VSNodeExampleState extends State<VSNodeExample> {
     ];
 
     nodeDataProvider = VSNodeDataProvider(
-      nodeBuilders: nodeBuilders,
+      nodeManager: VSNodeManager(nodeBuilders: nodeBuilders),
     );
   }
 
@@ -186,7 +186,7 @@ class _VSNodeExampleState extends State<VSNodeExample> {
               ElevatedButton(
                 onPressed: () => setState(() {
                   final entries =
-                      nodeDataProvider.nodeManger.getOutputNodes.map(
+                      nodeDataProvider.nodeManager.getOutputNodes.map(
                     (e) => e.evaluate(
                       onError: (_, __) => Future.delayed(Duration.zero, () {
                         ScaffoldMessenger.of(context).showSnackBar(

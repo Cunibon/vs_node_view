@@ -1,11 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:vs_node_view/data/offset_extension.dart';
 import 'package:vs_node_view/data/vs_interface.dart';
 import 'package:vs_node_view/data/vs_node_data.dart';
-import 'package:vs_node_view/data/vs_node_data_provider.dart';
+import 'package:vs_node_view/widgets/inherited_node_data_provider.dart';
 
 typedef VSNodeDataBuilder = VSNodeData Function(Offset, VSOutputData?);
 
@@ -28,14 +27,14 @@ RenderBox findAndUpdateWidgetPosition({
       widgetAnchor.currentContext?.findRenderObject() as RenderBox;
   Offset position = renderBox.localToGlobal(getWidgetCenter(renderBox));
 
-  final provider = context.read<VSNodeDataProvider>();
+  final provider = InheritedNodeDataProvider.of(context).provider;
 
   final newOffset =
       provider.applyViewPortTransfrom(position) - data.nodeData!.widgetOffset;
 
   if (newOffset != data.widgetOffset) {
     data.widgetOffset = newOffset;
-    provider.updateOrCreateNodes([data.nodeData!]);
+    provider.updateOrCreateNodes([data.nodeData!], updateHistory: false);
   }
 
   return renderBox;

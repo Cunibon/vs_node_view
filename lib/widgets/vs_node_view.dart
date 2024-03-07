@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:vs_node_view/data/vs_interface.dart';
 import 'package:vs_node_view/data/vs_node_data.dart';
 import 'package:vs_node_view/data/vs_node_data_provider.dart';
+import 'package:vs_node_view/widgets/inherited_node_data_provider.dart';
 import 'package:vs_node_view/widgets/line_drawer/multi_gradiant_line_drawer.dart';
 import 'package:vs_node_view/widgets/vs_context_menu.dart';
 import 'package:vs_node_view/widgets/vs_node.dart';
@@ -72,14 +72,11 @@ class VSNodeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider.value(value: nodeDataProvider),
-      ],
-      child: Builder(
-        builder: (context) {
-          final nodeDataProvider = context.watch<VSNodeDataProvider>();
-
+    return InheritedNodeDataProvider(
+      provider: nodeDataProvider,
+      child: ListenableBuilder(
+        listenable: nodeDataProvider,
+        builder: (context, _) {
           final nodes = nodeDataProvider.nodes.values.map((value) {
             return Positioned(
               left: value.widgetOffset.dx,

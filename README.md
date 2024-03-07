@@ -31,7 +31,6 @@ Use this plugin in your Flutter app to:
 * [Using VSNodeDataProvider](#using-VSNodeDataProvider)
 * [Using VSNodeView](#using-VSNodeView)
 * [Using InteractiveVSNodeView](#using-interactiveVSNodeView)
-* [Using VSNodeManager directly](#using-VSNodeManager-directly)
 
 ### Interfaces
 
@@ -263,6 +262,7 @@ VSOutputNode outputNode(Offset offset, VSOutputData? ref) {
 ### Using VSNodeDataProvider
 
 * [Preparing builders](#preparing-builders)
+* [Using VSNodeManager directly](#using-VSNodeManager-directly)
 * [Creating VSNodeDataProvider](#creating-VSNodeDataProvider)
 
 #### Preparing builders
@@ -316,17 +316,54 @@ This way your UI could look something like this:
     alt="An example a context menu using VSSubgroups" height="400"/>
 </p>
 
-#### Creating VSNodeDataProvider
+### Using VSNodeManager directly
 
-The VSNodeDataProvider takes all nodeBuilders that you want to use as well as a serializedNodes parameter.
-serializedNodes is just a string that can be optained by calling:
-```dart
-VSNodeDataProvider.nodeManger.serializeNodes()
-```
+VSNodeManager is the heart of all node operations. It keeps track of the data and has some API that can be called to modify said data on a low level.
 
-If the parameter is passed it will try to derserialize the string and recreate all nodes
+The node manager gets initialized with the nodeBuilders you want to use and optionaly any serialized Nodes.
+
+If the serializedNodes parameter is passed it will try to derserialize the string and recreate all nodes
 Its important to note that the deserialized nodes will use the supplied nodeBuilders to recreate the nodes.
 This means if a node is not part of nodeBuilders it cannot be deserialized and will be lost.
+
+```dart
+final manager = VSNodeManager(
+    nodeBuilders: nodeBuilders,
+    serializedNodes: serializedNodes,
+);
+```
+
+serializedNodes is just a string that can be optained by calling:
+```dart
+VSNodeManager.serializeNodes()
+```
+
+The VSNodeManager also exposes getOutputNodes, this will give you all output nodes that exist in the current node tree.
+You can evaluate them to get the final result at said node.
+```dart
+VSNodeManager.getOutputNodes.map((e) => e.evaluate());
+```
+
+#### Creating VSNodeDataProvider
+The VSNodeDataProvider takes an instance of VSNodeManager as parameter.
+Optionaly you can also pass an instance of VSHistoryManger to track node history.
+You can then call:
+
+```dart
+VSNodeDataProvider.historyManager!.undo()
+VSNodeDataProvider.historyManager!.redo()
+```
+
+to move through the history.
+
+A VSNodeDataProvider could be initialized like this:
+
+```dart
+final provider = VSNodeDataProvider(
+  nodeManager: VSNodeManager(nodeBuilders: nodeBuilders),
+  historyManager: VSHistoryManger(), 
+);
+```
 
 Here as a full example with the nodeBuilders:
 
@@ -345,8 +382,7 @@ final List<dynamic> nodeBuilders = [
 ];
 
 VSNodeDataProvider(
-    nodeBuilders: nodeBuilders,
-    serializedNodes: "*Serialized nodes*",
+  nodeManager: VSNodeManager(nodeBuilders: nodeBuilders),
 );
 ```
 
@@ -391,25 +427,6 @@ InteractiveVSNodeView(
     ),
 ),
 ```
-
-### Using VSNodeManager directly
-
-In case you dont need the UI and want to for example only evaluate a serialized node tree you can easily do that
-
-The node manager get initialized just like the provider:
-```dart
-final manager = VSNodeManager(
-    nodeBuilders: nodeBuilders,
-    serializedNodes: serializedNodes,
-);
-```
-
-once it is created you can simply call the evaluate function like with the provider:
-```dart
-manager.getOutputNodes.map((e) => e.evaluate());
-```
-
-and use the results however you want
 
 ## Additional information
 

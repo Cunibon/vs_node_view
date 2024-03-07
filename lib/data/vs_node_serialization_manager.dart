@@ -32,6 +32,9 @@ class VSNodeSerializationManager {
     _findNodes(nodeBuilders, contextNodeBuilders);
   }
 
+  ///This function gets called when a node failed to deserialize due to a missing builder
+  ///
+  ///The nodeJSON in question is given as a parameter
   final Function(Map nodeJSON)? onBuilderMissing;
 
   void _findNodes(

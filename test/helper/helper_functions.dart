@@ -9,7 +9,7 @@ Future<VSNodeDataProvider> pumpInteractiveVSNodeView(
   WidgetTester tester,
 ) async {
   final nodeDataProvider = VSNodeDataProvider(
-    nodeBuilders: nodeBuilders,
+    nodeManager: VSNodeManager(nodeBuilders: nodeBuilders),
   );
 
   await tester.pumpWidget(
@@ -28,7 +28,7 @@ Future<VSNodeDataProvider> pumpVSNodeView(
   WidgetTester tester,
 ) async {
   final nodeDataProvider = VSNodeDataProvider(
-    nodeBuilders: nodeBuilders,
+    nodeManager: VSNodeManager(nodeBuilders: nodeBuilders),
   );
 
   await tester.pumpWidget(

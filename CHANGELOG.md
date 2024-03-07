@@ -1,8 +1,18 @@
-## 1.2.3
+## 2.0.0
+
+**Breaking**:
+* Made VSNodeDataProvider take VSNodeManager as a parameter to reduce duplicate code
+
+**Features**:
+* Added undo and redo function to VSNodeDataProvider through VSHistoryManger
 
 **Changes**:
+* Removed Provider dependency 
 * Added additionalNodes to VSNodeDataProvider/VSNodeManager/VSNodeSerializationManager to allow adding nodes that will not be displayed in the context menu
 * Made errors in evalutations be more informational 
+
+**Fix**:
+* Fixed connections not rending when loading already existing nodes
 
 ## 1.2.2
 
