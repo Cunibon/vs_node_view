@@ -10,10 +10,6 @@ class InheritedNodeDataProvider extends InheritedWidget {
 
   final VSNodeDataProvider provider;
 
-  static InheritedNodeDataProvider of(BuildContext context) {
-    return context.findAncestorWidgetOfExactType<InheritedNodeDataProvider>()!;
-  }
-
   @override
   bool updateShouldNotify(InheritedNodeDataProvider oldWidget) =>
       provider.nodeManager.nodes != provider.nodeManager.nodes;

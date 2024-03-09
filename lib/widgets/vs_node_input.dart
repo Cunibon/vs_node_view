@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:vs_node_view/common.dart';
 import 'package:vs_node_view/data/vs_interface.dart';
+import 'package:vs_node_view/data/vs_node_data_provider.dart';
 import 'package:vs_node_view/special_nodes/vs_list_node.dart';
-import 'package:vs_node_view/widgets/inherited_node_data_provider.dart';
 
 class VSNodeInput extends StatefulWidget {
   ///Base node input widget
@@ -54,7 +54,7 @@ class _VSNodeInputState extends State<VSNodeInput> {
 
   void updateConnectedNode(VSOutputData? data) {
     widget.data.connectedInterface = data;
-    InheritedNodeDataProvider.of(context).provider.updateOrCreateNodes(
+    VSNodeDataProvider.of(context).updateOrCreateNodes(
       [widget.data.nodeData!],
     );
   }

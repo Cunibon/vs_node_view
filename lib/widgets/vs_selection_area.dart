@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:vs_node_view/data/vs_node_data_provider.dart';
-import 'package:vs_node_view/widgets/inherited_node_data_provider.dart';
 
 class VSSelectionArea extends StatefulWidget {
   ///The base selection area
@@ -38,7 +37,7 @@ class _VSSelectionAreaState extends State<VSSelectionArea> {
   void initState() {
     super.initState();
 
-    provider = InheritedNodeDataProvider.of(context).provider;
+    provider = VSNodeDataProvider.of(context);
     HardwareKeyboard.instance.addHandler(handleKeyInput);
   }
 

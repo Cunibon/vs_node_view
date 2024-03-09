@@ -365,6 +365,10 @@ final provider = VSNodeDataProvider(
 );
 ```
 
+The VSNodeDataProvider gets injected into the widget tree by the VSNodeView widget using the InheritedNodeDataProvider InheritedWidget.
+You can reach it anywhere in the widget tree below using VSNodeDataProvider.of(context).
+If you need to listen to changes, VSNodeDataProvider extends ChangeNotifier, so you can just use a ListenableBuilder.
+
 Here as a full example with the nodeBuilders:
 
 ```dart

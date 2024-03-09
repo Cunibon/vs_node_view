@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vs_node_view/common.dart';
-import 'package:vs_node_view/data/vs_history_manager.dart';
-import 'package:vs_node_view/data/vs_interface.dart';
-import 'package:vs_node_view/data/vs_node_data.dart';
-import 'package:vs_node_view/data/vs_node_manager.dart';
+import 'package:vs_node_view/vs_node_view.dart';
+import 'package:vs_node_view/widgets/inherited_node_data_provider.dart';
 
 ///Small data class to keep track of where the context menu is in 2D space
 ///
@@ -30,6 +28,13 @@ class VSNodeDataProvider extends ChangeNotifier {
       historyManager!.provider = this;
       historyManager!.updateHistory();
     }
+  }
+
+  ///Gets the closest [VSNodeDataProvider] from the widget tree
+  static VSNodeDataProvider of(BuildContext context) {
+    return context
+        .findAncestorWidgetOfExactType<InheritedNodeDataProvider>()!
+        .provider;
   }
 
   ///Instance of [VSNodeManager] representing the current nodes

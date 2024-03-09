@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vs_node_view/common.dart';
 import 'package:vs_node_view/data/vs_node_data.dart';
-import 'package:vs_node_view/widgets/inherited_node_data_provider.dart';
+import 'package:vs_node_view/data/vs_node_data_provider.dart';
 
 enum PopupOptions { rename, delete }
 
@@ -83,7 +83,7 @@ class _VSNodeTitleState extends State<VSNodeTitle> {
                     );
                     break;
                   case PopupOptions.delete:
-                    InheritedNodeDataProvider.of(context).provider.removeNodes(
+                    VSNodeDataProvider.of(context).removeNodes(
                       [widget.data],
                     );
                     break;

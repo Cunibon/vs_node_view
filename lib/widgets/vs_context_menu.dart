@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vs_node_view/widgets/inherited_node_data_provider.dart';
+import 'package:vs_node_view/data/vs_node_data_provider.dart';
 
 class VSContextMenu extends StatefulWidget {
   ///Base context menu
@@ -60,7 +60,7 @@ class _VSContextMenuState extends State<VSContextMenu> {
       } else {
         widgets.add(TextButton(
           onPressed: () {
-            final dataProvider = InheritedNodeDataProvider.of(context).provider;
+            final dataProvider = VSNodeDataProvider.of(context);
             dataProvider.createNodeFromContext(entry.value);
             dataProvider.closeContextMenu();
           },

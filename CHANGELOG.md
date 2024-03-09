@@ -1,3 +1,9 @@
+## 2.1.0
+
+**Breaking**:
+* Removed InheritedNodeDataProvider.of(context) function
+* Replaced it with VSNodeDataProvider.of(context) to get the provider directly
+
 ## 2.0.0
 
 **Breaking**:

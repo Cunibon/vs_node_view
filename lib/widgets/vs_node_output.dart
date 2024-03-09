@@ -3,7 +3,7 @@ import 'package:vs_node_view/common.dart';
 import 'package:vs_node_view/data/vs_interface.dart';
 import 'package:vs_node_view/special_nodes/vs_list_node.dart';
 import 'package:vs_node_view/special_nodes/vs_widget_node.dart';
-import 'package:vs_node_view/widgets/inherited_node_data_provider.dart';
+import 'package:vs_node_view/data/vs_node_data_provider.dart';
 import 'package:vs_node_view/widgets/line_drawer/gradiant_line_drawer.dart';
 
 class VSNodeOutput extends StatefulWidget {
@@ -84,10 +84,10 @@ class _VSNodeOutputState extends State<VSNodeOutput> {
               dragPos = null;
             }),
             onDraggableCanceled: (velocity, offset) {
-              InheritedNodeDataProvider.of(context).provider.openContextMenu(
-                    position: offset,
-                    outputData: widget.data,
-                  );
+              VSNodeDataProvider.of(context).openContextMenu(
+                position: offset,
+                outputData: widget.data,
+              );
             },
             feedback: Icon(
               Icons.circle,

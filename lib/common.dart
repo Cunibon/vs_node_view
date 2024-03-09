@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:vs_node_view/data/offset_extension.dart';
 import 'package:vs_node_view/data/vs_interface.dart';
 import 'package:vs_node_view/data/vs_node_data.dart';
-import 'package:vs_node_view/widgets/inherited_node_data_provider.dart';
+import 'package:vs_node_view/data/vs_node_data_provider.dart';
 
 typedef VSNodeDataBuilder = VSNodeData Function(Offset, VSOutputData?);
 
@@ -27,7 +27,7 @@ RenderBox findAndUpdateWidgetPosition({
       widgetAnchor.currentContext?.findRenderObject() as RenderBox;
   Offset position = renderBox.localToGlobal(getWidgetCenter(renderBox));
 
-  final provider = InheritedNodeDataProvider.of(context).provider;
+  final provider = VSNodeDataProvider.of(context);
 
   final newOffset =
       provider.applyViewPortTransfrom(position) - data.nodeData!.widgetOffset;
