@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:vs_node_view/common.dart';
 import 'package:vs_node_view/data/vs_interface.dart';
+import 'package:vs_node_view/data/vs_node_data_provider.dart';
 import 'package:vs_node_view/special_nodes/vs_list_node.dart';
 import 'package:vs_node_view/special_nodes/vs_widget_node.dart';
-import 'package:vs_node_view/data/vs_node_data_provider.dart';
 import 'package:vs_node_view/widgets/line_drawer/gradiant_line_drawer.dart';
 
 class VSNodeOutput extends StatefulWidget {

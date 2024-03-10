@@ -12,6 +12,7 @@ class VSNodeData {
     required this.widgetOffset,
     required this.inputData,
     required this.outputData,
+    this.nodeWidth,
     this.onUpdatedConnection,
     this.toolTip,
     String? title,
@@ -38,6 +39,9 @@ class VSNodeData {
 
   ///The current offset of the widget from the origin (Top-Left corner)
   Offset widgetOffset;
+
+  ///The width this node will have in the UI
+  final double? nodeWidth;
 
   ///The input interfaces of this node
   Iterable<VSInputData> inputData;

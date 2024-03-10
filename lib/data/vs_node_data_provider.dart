@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vs_node_view/common.dart';
 import 'package:vs_node_view/vs_node_view.dart';
-import 'package:vs_node_view/widgets/inherited_node_data_provider.dart';
 
 ///Small data class to keep track of where the context menu is in 2D space
 ///

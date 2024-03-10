@@ -13,6 +13,7 @@ class VSOutputNode extends VSNodeData {
     required String type,
     required Offset widgetOffset,
     VSOutputData? ref,
+    double? nodeWidth,
     String? title,
     String? toolTip,
     String? inputTitle,
@@ -28,6 +29,7 @@ class VSOutputNode extends VSNodeData {
             )
           ],
           outputData: const [],
+          nodeWidth: nodeWidth,
           title: title,
           toolTip: toolTip,
           onUpdatedConnection: onUpdatedConnection,

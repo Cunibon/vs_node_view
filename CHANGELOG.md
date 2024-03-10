@@ -1,3 +1,11 @@
+## 2.1.1
+
+**Features**:
+* Added option to define node width inside VSNodeData for more granular control
+
+**Fix**:
+* Fixed sorting bug that made node connection appear above context menu
+
 ## 2.1.0
 
 **Breaking**:

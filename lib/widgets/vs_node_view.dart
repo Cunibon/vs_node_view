@@ -93,44 +93,44 @@ class VSNodeView extends StatelessWidget {
             );
           });
 
-          final view = CustomPaint(
-            foregroundPainter: MultiGradientLinePainter(
-              data: nodeDataProvider.nodes.values
-                  .expand<VSInputData>((element) => element.inputData)
-                  .toList(),
-            ),
-            child: Stack(
-              children: [
-                gestureDetectorBuilder?.call(context, nodeDataProvider) ??
-                    GestureDetector(
-                      onTapDown: (details) {
-                        nodeDataProvider.closeContextMenu();
-                        nodeDataProvider.selectedNodes = {};
-                      },
-                      onSecondaryTapUp: (details) =>
-                          nodeDataProvider.openContextMenu(
-                        position: details.globalPosition,
-                      ),
-                      onLongPressStart: (details) =>
-                          nodeDataProvider.openContextMenu(
-                        position: details.globalPosition,
-                      ),
+          final view = Stack(
+            children: [
+              gestureDetectorBuilder?.call(context, nodeDataProvider) ??
+                  GestureDetector(
+                    onTapDown: (details) {
+                      nodeDataProvider.closeContextMenu();
+                      nodeDataProvider.selectedNodes = {};
+                    },
+                    onSecondaryTapUp: (details) =>
+                        nodeDataProvider.openContextMenu(
+                      position: details.globalPosition,
                     ),
-                ...nodes,
-                if (nodeDataProvider.contextMenuContext != null)
-                  Positioned(
-                    left: nodeDataProvider.contextMenuContext!.offset.dx,
-                    top: nodeDataProvider.contextMenuContext!.offset.dy,
-                    child: contextMenuBuilder?.call(
-                          context,
-                          nodeDataProvider.nodeBuildersMap,
-                        ) ??
-                        VSContextMenu(
-                          nodeBuilders: nodeDataProvider.nodeBuildersMap,
-                        ),
+                    onLongPressStart: (details) =>
+                        nodeDataProvider.openContextMenu(
+                      position: details.globalPosition,
+                    ),
                   ),
-              ],
-            ),
+              ...nodes,
+              CustomPaint(
+                foregroundPainter: MultiGradientLinePainter(
+                  data: nodeDataProvider.nodes.values
+                      .expand<VSInputData>((element) => element.inputData)
+                      .toList(),
+                ),
+              ),
+              if (nodeDataProvider.contextMenuContext != null)
+                Positioned(
+                  left: nodeDataProvider.contextMenuContext!.offset.dx,
+                  top: nodeDataProvider.contextMenuContext!.offset.dy,
+                  child: contextMenuBuilder?.call(
+                        context,
+                        nodeDataProvider.nodeBuildersMap,
+                      ) ??
+                      VSContextMenu(
+                        nodeBuilders: nodeDataProvider.nodeBuildersMap,
+                      ),
+                ),
+            ],
           );
 
           if (enableSelectionArea) {

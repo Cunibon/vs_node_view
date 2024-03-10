@@ -19,7 +19,9 @@ class VSNode extends StatefulWidget {
   ///The data the widget will use to build the UI
   final VSNodeData data;
 
-  ///Width of the node
+  ///Default width of the node
+  ///
+  ///Will be used unless width is specified inside [VSNodeData]
   final double width;
 
   ///Can be used to take control over the building of the nodes titles
@@ -82,7 +84,7 @@ class _VSNodeState extends State<VSNode> {
                   widget.data.title,
                 ),
                 SizedBox(
-                  width: widget.width,
+                  width: widget.data.nodeWidth ?? widget.width,
                 )
               ],
             ),
@@ -96,7 +98,7 @@ class _VSNodeState extends State<VSNode> {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: SizedBox(
-            width: widget.width,
+            width: widget.data.nodeWidth ?? widget.width,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
